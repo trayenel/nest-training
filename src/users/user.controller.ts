@@ -7,22 +7,25 @@ import {
   Patch,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
-import { UserEntity } from '../Entities/user.entity';
-import { UserService } from '../Services/user.service';
-import type { UserRequestDTO } from '../DTO/UserRequestDTO';
+import { UserService } from './user.service';
+import type { UserRequestDTO } from './dto/UserRequestDTO';
+import { UserResponseDTO } from './dto/UserResponseDTO';
+import { AuthGuard } from '../common/guards/auth.guard';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @UseGuards(AuthGuard)
   @Get('/')
-  async getAllUsers(): Promise<UserEntity[]> {
+  async getAllUsers(): Promise<UserResponseDTO[]> {
     return await this.userService.getAllUsers();
   }
 
   @Get('/:id')
-  async getUserById(@Param('id') id: string): Promise<UserEntity> {
+  async getUserById(@Param('id') id: string): Promise<UserResponseDTO> {
     return await this.userService.getUserById(id);
   }
 
@@ -40,7 +43,7 @@ export class UserController {
   async updateUser(
     @Param('id') id: string,
     @Body() user: UserRequestDTO,
-  ): Promise<UserEntity> {
+  ): Promise<UserResponseDTO> {
     return await this.userService.updateUser(id, user);
   }
 
@@ -48,7 +51,7 @@ export class UserController {
   async patchUser(
     @Param('id') id: string,
     @Body() user: UserRequestDTO,
-  ): Promise<UserEntity> {
+  ): Promise<UserResponseDTO> {
     return await this.userService.patchUser(id, user);
   }
 }

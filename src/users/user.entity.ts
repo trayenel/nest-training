@@ -10,4 +10,7 @@ export class UserEntity {
 
   @Column('varchar', { name: 'email', length: 50 })
   email: string;
+
+  @Column('varchar', { name: 'password', length: 50 })
+  password: string;
 }
