@@ -12,13 +12,13 @@ import {
 import { UserService } from './user.service';
 import type { UserRequestDTO } from './dto/UserRequestDTO';
 import { UserResponseDTO } from './dto/UserResponseDTO';
-import { AuthGuard } from '../common/guards/auth.guard';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('/')
   async getAllUsers(): Promise<UserResponseDTO[]> {
     return await this.userService.getAllUsers();

@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { UserEntity } from '../users/user.entity';
 import { Repository } from 'typeorm';
+import { UserResponseDTO } from '../users/dto/UserResponseDTO';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -16,7 +17,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(username: string, _password: string): Promise<any> {
+  async validateUser(
+    username: string,
+    _password: string,
+  ): Promise<UserResponseDTO> {
     const user: UserEntity | null = await this.userRepository.findOneBy({
       name: username,
     });
@@ -29,6 +33,12 @@ export class AuthService {
       throw new HttpException('Invalid Password', HttpStatus.BAD_REQUEST);
     }
 
+    const { password, ...results } = user;
+
+    return results;
+  }
+
+  async login(user: any): Promise<any> {
     const payload = { sub: user.id, username: user.name };
 
     return { access_token: this.jwtService.sign(payload) };

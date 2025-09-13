@@ -5,7 +5,7 @@ import { UserActionModule } from './user-actions/userAction.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [UsersModule, ActionModule, UserActionModule, AuthModule],
+  imports: [AuthModule, UsersModule, ActionModule, UserActionModule],
   controllers: [],
   providers: [],
 })
