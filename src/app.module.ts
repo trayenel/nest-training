@@ -3,9 +3,16 @@ import { UsersModule } from './users/user.module';
 import { ActionModule } from './actions/action.module';
 import { UserActionModule } from './user-actions/userAction.module';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [AuthModule, UsersModule, ActionModule, UserActionModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    AuthModule,
+    UsersModule,
+    ActionModule,
+    UserActionModule,
+  ],
   controllers: [],
   providers: [],
 })
