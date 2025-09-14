@@ -18,14 +18,17 @@ export class UserService {
       throw new NotFoundException();
     }
 
-    return users.map(({ password, ...rest }) => {
+    return users.map(({ password, ...rest }: UserEntity): UserResponseDTO => {
       return rest as UserResponseDTO;
     });
   }
 
   async getUserById(id: string): Promise<UserResponseDTO> {
-    const user: UserEntity | null = await this.usersRepository.findOneBy({
-      id: id,
+    const user: UserEntity | null = await this.usersRepository.findOne({
+      where: {
+        userId: id,
+      },
+      relations: ['roles'],
     });
 
     if (!user) throw new NotFoundException(`User with ID ${id} not found`);
@@ -66,7 +69,7 @@ export class UserService {
     modifiedUser: UserRequestDTO,
   ): Promise<UserResponseDTO> {
     const userEntity: UserEntity | null = await this.usersRepository.findOneBy({
-      id: id,
+      userId: id,
     });
 
     if (!userEntity)
@@ -88,7 +91,7 @@ export class UserService {
     partialUser: Partial<UserRequestDTO>,
   ): Promise<UserResponseDTO> {
     const user: UserEntity | null = await this.usersRepository.findOneBy({
-      id: id,
+      userId: id,
     });
 
     if (!user) throw new NotFoundException(`User with id ${id} not found`);

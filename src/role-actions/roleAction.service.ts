@@ -3,7 +3,7 @@
 // import { UserService } from './user.service';
 // import { ActionService } from './action.service';
 // import UserRequestDTO from '../DTO/UserRequestDTO';
-// import ActionRequestDTO from '../DTO/ActionRequestDTO';
+// import ActionDTO from '../DTO/ActionDTO';
 //
 // @Injectable()
 // export class UserActionService {
@@ -16,11 +16,11 @@
 //     this.userActions = new Map<string, UserActionDTO>();
 //
 //     const usersRecord: Record<string, UserRequestDTO> = userService.getAllUsers();
-//     const actionsRecord: Record<string, ActionRequestDTO> =
+//     const actionsRecord: Record<string, ActionDTO> =
 //       actionService.getAllActions();
 //
 //     const users: UserRequestDTO[] = [];
-//     const actions: ActionRequestDTO[] = [];
+//     const actions: ActionDTO[] = [];
 //
 //     for (const key in usersRecord) {
 //       users.push(usersRecord[key]);
@@ -36,7 +36,7 @@
 //       const idx: number = Math.floor(Math.random() * users.length);
 //       const user: UserRequestDTO = users[idx];
 //
-//       const action: ActionRequestDTO =
+//       const action: ActionDTO =
 //         actions[Math.floor(Math.random() * actions.length)];
 //       const id: string = Math.random().toString(36).slice(2, 10);
 //
@@ -52,7 +52,7 @@
 //
 //   getUsersAndActions(): Record<string, UserRequestDTO> {
 //     const users: Record<string, UserRequestDTO> = this.userService.getAllUsers();
-//     const actions: Record<string, ActionRequestDTO> =
+//     const actions: Record<string, ActionDTO> =
 //       this.actionService.getAllActions();
 //
 //     for (const action of this.userActions.values()) {

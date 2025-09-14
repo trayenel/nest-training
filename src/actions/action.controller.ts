@@ -4,51 +4,48 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
+  // Patch,
   Post,
   Put,
 } from '@nestjs/common';
 import { ActionService } from './action.service';
-import type ActionRequestDTO from './dto/ActionRequestDTO';
-import { ActionEntity } from './action.entity';
+import type ActionDTO from './dto/ActionDTO';
 
 @Controller('actions')
 export class ActionController {
   constructor(private readonly actionService: ActionService) {}
 
   @Get('/')
-  async getAllActions(): Promise<ActionEntity[]> {
+  async getAllActions(): Promise<ActionDTO[]> {
     return await this.actionService.getAllActions();
   }
 
   @Get('/:id')
-  async getActionById(@Param('id') id: string): Promise<ActionEntity> {
+  async getActionById(@Param('id') id: string): Promise<ActionDTO> {
     return await this.actionService.getActionById(id);
   }
 
   @Post('/')
-  async createAction(
-    @Body() newActionDTO: ActionRequestDTO,
-  ): Promise<ActionEntity> {
-    return await this.actionService.createAction(newActionDTO);
+  async createAction(@Body() newAction: ActionDTO): Promise<ActionDTO> {
+    return await this.actionService.createAction(newAction);
   }
 
   @Put('/:id')
   async updateAction(
     @Param('id') id: string,
-    @Body() actionDTO: ActionRequestDTO,
-  ): Promise<ActionEntity> {
+    @Body() actionDTO: ActionDTO,
+  ): Promise<ActionDTO> {
     return await this.actionService.updateAction(id, actionDTO);
   }
 
-  @Patch('/:id')
-  async patchAction(
-    @Param('id') id: string,
-    @Body() action: ActionRequestDTO,
-  ): Promise<ActionEntity> {
-    return await this.actionService.patchAction(id, action);
-  }
-
+  // @Patch('/:id')
+  // async patchAction(
+  //   @Param('id') id: string,
+  //   @Body() action: ActionDTO,
+  // ): Promise<ActionDTO> {
+  //   return await this.actionService.patchAction(id, action);
+  // }
+  //
   @Delete('/:id')
   async deleteActionById(
     @Param('id') id: string,

@@ -6,4 +6,4 @@ import { Module } from '@nestjs/common';
   controllers: [],
   providers: [],
 })
-export class UserActionModule {}
+export class RoleActionModule {}

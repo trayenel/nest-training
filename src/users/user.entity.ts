@@ -1,9 +1,16 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { RoleEntity } from '../roles/role.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid', { name: 'id' })
-  id: string;
+  userId: string;
 
   @Column('varchar', { name: 'name', length: 50 })
   name: string;
@@ -13,4 +20,12 @@ export class UserEntity {
 
   @Column('varchar', { name: 'password', length: 50 })
   password: string;
+
+  @ManyToMany(() => RoleEntity)
+  @JoinTable({
+    name: 'user_role',
+    joinColumn: { name: 'user_id', referencedColumnName: 'userId' },
+    inverseJoinColumn: { name: 'role_id', referencedColumnName: 'roleId' },
+  })
+  roles: RoleEntity[];
 }
