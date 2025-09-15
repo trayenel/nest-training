@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from './modules/users/user.module';
-import { ActionModule } from './modules/actions/action.module';
-import { RoleActionModule } from './modules/role-actions/roleAction.module';
-import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/user.module.js';
+import { ActionModule } from './modules/actions/action.module.js';
+import { RoleActionModule } from './modules/role-actions/roleAction.module.js';
+import { AuthModule } from './modules/auth/auth.module.js';
 import { ConfigModule } from '@nestjs/config';
-import { RoleModule } from './modules/roles/role.module';
+import { RoleModule } from './modules/roles/role.module.js';
 
 @Module({
   imports: [

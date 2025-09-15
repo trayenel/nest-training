@@ -1,8 +1,8 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import ActionDTO from './dto/ActionDTO';
+import ActionDTO from './dto/ActionDTO.js';
 import { DeleteResult, Repository } from 'typeorm';
-import { ActionEntity } from '../../typeorm/entities/action.entity';
-import actionDTO from './dto/ActionDTO';
+import { ActionEntity } from '../../typeorm/entities/action.entity.js';
+import actionDTO from './dto/ActionDTO.js';
 
 @Injectable()
 export class ActionService {

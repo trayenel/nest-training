@@ -8,8 +8,8 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ActionService } from './action.service';
-import type ActionDTO from './dto/ActionDTO';
+import { ActionService } from './action.service.js';
+import type ActionDTO from './dto/ActionDTO.js';
 
 @Controller('actions')
 export class ActionController {

@@ -8,13 +8,13 @@ import {
   Post,
   Put, UseGuards,
 } from '@nestjs/common';
-import { UserService } from './user.service';
-import type { UserRequestDTO } from './dto/UserRequestDTO';
-import { UserResponseDTO } from './dto/UserResponseDTO';
-import { ActionsEnum } from '../../shared/models/enums/actions.enum';
-import { RequireAction } from '../../shared/decorators/actions.decorator';
-import { RoleGuard } from '../auth/guards/role.guard';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { UserService } from './user.service.js';
+import type { UserRequestDTO } from './dto/UserRequestDTO.js';
+import { UserResponseDTO } from './dto/UserResponseDTO.js';
+import { ActionsEnum } from '../../shared/models/enums/actions.enum.js';
+import { RequireAction } from '../../shared/decorators/actions.decorator.js';
+import { RoleGuard } from '../auth/guards/role.guard.js';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
 
 @Controller('users')
 export class UserController {

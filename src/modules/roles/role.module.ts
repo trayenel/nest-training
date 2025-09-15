@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { RoleController } from './role.controller';
-import { RoleService } from './role.service';
-import { DatabaseModule } from '../../typeorm/database.module';
-import { roleProviders } from '../../typeorm/providers/role.providers';
+import { RoleController } from './role.controller.js';
+import { RoleService } from './role.service.js';
+import { DatabaseModule } from '../../typeorm/database.module.js';
+import { roleProviders } from '../../typeorm/providers/role.providers.js';
 
 @Module({
   imports: [DatabaseModule],

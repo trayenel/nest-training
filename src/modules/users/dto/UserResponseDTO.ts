@@ -1,4 +1,4 @@
-import { RoleDTO } from '../../roles/dto/RoleDTO';
+import { RoleDTO } from '../../roles/dto/RoleDTO.js';
 
 export class UserResponseDTO {
   userId: string;

@@ -1,5 +1,9 @@
 import { ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
+import { fileURLToPath } from 'node:url';
+import * as path from 'path';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export const databaseProviders = [
   {

@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
-import { DatabaseModule } from '../../typeorm/database.module';
-import { userProviders } from 'src/typeorm/providers/user.providers';
+import { AuthService } from './auth.service.js';
+import { AuthController } from './auth.controller.js';
+import { DatabaseModule } from '../../typeorm/database.module.js';
+import {userProviders} from '../../typeorm/providers/user.providers.js';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from './strategies/local.strategy';
+import { LocalStrategy } from './strategies/local.strategy.js';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from './strategies/jwt.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy.js';
 import { ConfigService } from '@nestjs/config';
 
 @Module({

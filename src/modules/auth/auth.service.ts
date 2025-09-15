@@ -5,9 +5,9 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { UserEntity } from '../../typeorm/entities/user.entity';
+import { UserEntity } from '../../typeorm/entities/user.entity.js';
 import { Repository } from 'typeorm';
-import { UserResponseDTO } from '../users/dto/UserResponseDTO';
+import { UserResponseDTO } from '../users/dto/UserResponseDTO.js';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()

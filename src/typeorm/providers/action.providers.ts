@@ -1,4 +1,4 @@
-import { ActionEntity } from '../entities/action.entity';
+import { ActionEntity } from '../entities/action.entity.js';
 import { DataSource } from 'typeorm';
 
 export const actionProviders = [
