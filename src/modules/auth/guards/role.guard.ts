@@ -6,12 +6,9 @@ import { UserService } from '../../users/user.service.js';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
-  constructor(
-    private reflector: Reflector,
-    private userService: UserService,
-  ) {}
+  constructor(private reflector: Reflector) {}
 
-  async canActivate(context: ExecutionContext): Promise<boolean> {
+  canActivate(context: ExecutionContext): boolean {
     const requiredAction: ActionsEnum = this.reflector.get<ActionsEnum>(
       RequireAction,
       context.getHandler(),

@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { UserEntity } from '../../typeorm/entities/user.entity.js';
 import { Repository } from 'typeorm';
-import { UserResponseDTO } from '../users/dto/UserResponseDTO.js';
+import { UserResponseDto } from '../users/dto/userResponse.dto.js';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class AuthService {
   async validateUser(
     username: string,
     _password: string,
-  ): Promise<UserResponseDTO> {
+  ): Promise<UserResponseDto> {
     const user: UserEntity | null = await this.userRepository.findOneBy({
       name: username,
     });

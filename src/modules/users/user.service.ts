@@ -1,8 +1,8 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Repository, DeleteResult } from 'typeorm';
 import { UserEntity } from '../../typeorm/entities/user.entity.js';
-import { UserRequestDTO } from './dto/UserRequestDTO.js';
-import { UserResponseDTO } from './dto/UserResponseDTO.js';
+import { UserRequestDto } from './dto/userRequest.dto.js';
+import { UserResponseDto } from './dto/userResponse.dto.js';
 
 @Injectable()
 export class UserService {
@@ -11,19 +11,19 @@ export class UserService {
     private readonly usersRepository: Repository<UserEntity>,
   ) {}
 
-  async getAllUsers(): Promise<UserResponseDTO[]> {
+  async getAllUsers(): Promise<UserResponseDto[]> {
     const users: UserEntity[] = await this.usersRepository.find();
 
     if (!users || users.length === 0) {
       throw new NotFoundException();
     }
 
-    return users.map(({ password, ...rest }: UserEntity): UserResponseDTO => {
-      return rest as UserResponseDTO;
+    return users.map(({ password, ...rest }: UserEntity): UserResponseDto => {
+      return rest as UserResponseDto;
     });
   }
 
-  async getUserById(id: string): Promise<UserResponseDTO> {
+  async getUserById(id: string): Promise<UserResponseDto> {
     const user: UserEntity | null = await this.usersRepository.findOne({
       where: {
         userId: id,
@@ -38,7 +38,7 @@ export class UserService {
     return results;
   }
 
-  async getUserByName(name: string): Promise<UserResponseDTO> {
+  async getUserByName(name: string): Promise<UserResponseDto> {
     const user: UserEntity | null = await this.usersRepository.findOneBy({
       name: name,
     });
@@ -50,12 +50,12 @@ export class UserService {
     return results;
   }
 
-  async createUser(user: UserRequestDTO): Promise<UserResponseDTO> {
+  async createUser(user: UserRequestDto): Promise<UserResponseDto> {
     const userEntity: UserEntity = this.usersRepository.create(user);
 
     const savedUser: UserEntity = await this.usersRepository.save(userEntity);
 
-    return savedUser as UserResponseDTO;
+    return savedUser as UserResponseDto;
   }
 
   async deleteUserById(id: string): Promise<void> {
@@ -66,8 +66,8 @@ export class UserService {
 
   async updateUser(
     id: string,
-    modifiedUser: UserRequestDTO,
-  ): Promise<UserResponseDTO> {
+    modifiedUser: UserRequestDto,
+  ): Promise<UserResponseDto> {
     const userEntity: UserEntity | null = await this.usersRepository.findOneBy({
       userId: id,
     });
@@ -88,8 +88,8 @@ export class UserService {
 
   async patchUser(
     id: string,
-    partialUser: Partial<UserRequestDTO>,
-  ): Promise<UserResponseDTO> {
+    partialUser: Partial<UserRequestDto>,
+  ): Promise<UserResponseDto> {
     const user: UserEntity | null = await this.usersRepository.findOneBy({
       userId: id,
     });

@@ -1,4 +1,4 @@
-export class UserRequestDTO {
+export class UserRequestDto {
   name: string;
   email: string;
 }

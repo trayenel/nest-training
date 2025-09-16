@@ -1,8 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import ActionDTO from './dto/ActionDTO.js';
 import { DeleteResult, Repository } from 'typeorm';
 import { ActionEntity } from '../../typeorm/entities/action.entity.js';
-import actionDTO from './dto/ActionDTO.js';
+import { ActionDto } from './dto/action.dto.js';
 
 @Injectable()
 export class ActionService {
@@ -11,11 +10,11 @@ export class ActionService {
     private readonly actionRepository: Repository<ActionEntity>,
   ) {}
 
-  async getAllActions(): Promise<ActionDTO[]> {
-    return (await this.actionRepository.find()) as ActionDTO[];
+  async getAllActions(): Promise<ActionDto[]> {
+    return (await this.actionRepository.find()) as ActionDto[];
   }
 
-  async getActionById(id: string): Promise<ActionDTO> {
+  async getActionById(id: string): Promise<ActionDto> {
     const action: ActionEntity | null = await this.actionRepository.findOneBy({
       actionId: id,
     });
@@ -27,13 +26,13 @@ export class ActionService {
     }
   }
 
-  async createAction(action: ActionDTO): Promise<ActionDTO> {
+  async createAction(action: ActionDto): Promise<ActionDto> {
     const actionEntity: ActionEntity = this.actionRepository.create(action);
 
     return await this.actionRepository.save(actionEntity);
   }
 
-  async updateAction(id: string, newAction: actionDTO): Promise<actionDTO> {
+  async updateAction(id: string, newAction: ActionDto): Promise<ActionDto> {
     const oldAction: ActionEntity | null =
       await this.actionRepository.findOneBy({ actionId: id });
 
@@ -51,7 +50,7 @@ export class ActionService {
   //
   // async patchAction(
   //   id: string,
-  //   newAction: Partial<ActionDTO>,
+  //   newAction: Partial<ActionDto>,
   // ): Promise<ActionEntity> {
   //   const oldAction: ActionEntity = await this.getActionById(id);
   //

@@ -78,6 +78,14 @@ export class Version01757944025045 implements MigrationInterface {
         ('READ_ROLE', 'View role information')
       `);
 
+      await queryRunner.query(
+        `
+        WITH actions as (SELECT id FROM action),
+        admin_role as (SELECT id FROM role WHERE name = 'ADMIN')
+        INSERT INTO role_action (role_id, action_id) SELECT admin_role.id, actions.id FROM admin_role, actions;
+        `,
+      );
+
       await queryRunner.commitTransaction();
     } catch (error) {
       await queryRunner.rollbackTransaction();
