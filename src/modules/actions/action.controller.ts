@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   // Patch,
   Post,
   Put,
@@ -21,7 +22,9 @@ export class ActionController {
   }
 
   @Get('/:id')
-  async getActionById(@Param('id') id: string): Promise<ActionDto> {
+  async getActionById(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<ActionDto> {
     return await this.actionService.getActionById(id);
   }
 
@@ -32,23 +35,15 @@ export class ActionController {
 
   @Put('/:id')
   async updateAction(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() actionDTO: ActionDto,
   ): Promise<ActionDto> {
     return await this.actionService.updateAction(id, actionDTO);
   }
 
-  // @Patch('/:id')
-  // async patchAction(
-  //   @Param('id') id: string,
-  //   @Body() action: ActionDto,
-  // ): Promise<ActionDto> {
-  //   return await this.actionService.patchAction(id, action);
-  // }
-  //
   @Delete('/:id')
   async deleteActionById(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
   ): Promise<{ message: string }> {
     return await this.actionService.deleteActionById(id);
   }

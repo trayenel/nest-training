@@ -8,12 +8,14 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '../../../shared/decorators/public.decorator.js';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
     private reflector: Reflector,
+    private configService: ConfigService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -33,7 +35,7 @@ export class AuthGuard implements CanActivate {
     }
     try {
       request['user'] = await this.jwtService.verifyAsync(token, {
-        secret: 'lol',
+        secret: process.env.JWT_SECRET,
       });
       return true;
     } catch {

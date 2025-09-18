@@ -1,7 +1,14 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { DeleteResult, Repository } from 'typeorm';
 import { ActionEntity } from '../../typeorm/entities/action.entity.js';
 import { ActionDto } from './dto/action.dto.js';
+import { RoleEntity } from '../../typeorm/entities/role.entity';
 
 @Injectable()
 export class ActionService {
@@ -27,6 +34,18 @@ export class ActionService {
   }
 
   async createAction(action: ActionDto): Promise<ActionDto> {
+    const existingAction: ActionEntity | null =
+      await this.actionRepository.findOne({
+        where: { name: action.name },
+      });
+
+    if (existingAction) {
+      throw new HttpException(
+        `Role ${existingAction.name} already exists`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     const actionEntity: ActionEntity = this.actionRepository.create(action);
 
     return await this.actionRepository.save(actionEntity);

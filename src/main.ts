@@ -1,7 +1,10 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module.js';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import dotenv from 'dotenv';
+import { ValidationPipe } from '@nestjs/common';
+import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
+import { RoleGuard } from './modules/auth/guards/role.guard';
 
 async function bootstrap() {
   dotenv.config();
@@ -16,6 +19,14 @@ async function bootstrap() {
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
+
+  app.useGlobalPipes(new ValidationPipe());
+
+  const reflector = app.get(Reflector);
+  const jwtAuthGuard = new JwtAuthGuard(reflector);
+  const roleGuard = new RoleGuard(reflector);
+
+  app.useGlobalGuards(jwtAuthGuard, roleGuard);
 
   await app.listen(Number(process.env.APP_PORT));
 }

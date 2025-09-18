@@ -1,4 +1,11 @@
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+
 export class UserRequestDto {
+  @IsNotEmpty()
+  @IsString()
   name: string;
-  email: string;
+
+  @IsOptional()
+  @IsEmail()
+  email?: string;
 }

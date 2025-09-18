@@ -5,8 +5,8 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { RoleService } from './role.service.js';
 import { RoleDto } from './dto/role.dto.js';
@@ -25,63 +25,68 @@ export class RoleController {
     private readonly actionService: ActionService,
   ) {}
 
-  @UseGuards(JwtAuthGuard, RoleGuard)
   @RequireAction(ActionsEnum.READ_ROLE)
   @Get('/')
   async getAllRoles(): Promise<RoleDto[]> {
     return await this.roleService.getAllRoles();
   }
 
-  @UseGuards(JwtAuthGuard, RoleGuard)
   @RequireAction(ActionsEnum.READ_ROLE)
-  @Get(':roleId')
-  async getRoleById(@Param('roleId') roleId: string): Promise<RoleDto> {
-    return await this.roleService.getRoleById(roleId);
+  @Get(':roleUUID')
+  async getRoleById(@Param('roleUUID') roleUUID: string): Promise<RoleDto> {
+    return await this.roleService.getRoleById(roleUUID);
   }
 
-  @UseGuards(JwtAuthGuard, RoleGuard)
   @RequireAction(ActionsEnum.CREATE_ROLE)
-  @Get(':roleId')
+  @Post('/')
   async createRole(@Body() newRole: RoleDto): Promise<RoleDto> {
     return await this.roleService.createRole(newRole);
   }
 
-  @UseGuards(JwtAuthGuard, RoleGuard)
   @RequireAction(ActionsEnum.UPDATE_ROLE)
-  @Get(':roleId')
+  @Post(':roleUUID')
   async updateRole(
-    @Param('roleId') roleId: string,
+    @Param('roleUUID', ParseUUIDPipe) roleUUID: string,
     @Body() modifiedRole: RoleDto,
   ): Promise<RoleDto> {
-    return await this.roleService.updateRole(roleId, modifiedRole);
+    return await this.roleService.updateRole(roleUUID, modifiedRole);
   }
 
-  // @UseGuards(JwtAuthGuard, RoleGuard)
-  @Post(':roleId/action/:actionId')
+  @Post(':roleUUID/action/:actionUUID')
   async addRoleAction(
-    @Param('roleId') roleId: string,
-    @Param('actionId') actionId: string,
+    @Param('roleUUID', ParseUUIDPipe) roleUUID: string,
+    @Param('actionUUID', ParseUUIDPipe) actionUUID: string,
   ): Promise<RoleActionDto> {
-    const action: ActionDto = await this.actionService.getActionById(actionId);
+    const action: ActionDto =
+      await this.actionService.getActionById(actionUUID);
 
     if (!action) {
       throw new BadRequestException('Action Not Found');
     }
 
-    return await this.roleService.addRoleAction(roleId, actionId);
+    return await this.roleService.addRoleAction(roleUUID, actionUUID);
   }
 
-  @Delete(':roleId/action/:actionId')
+  @Delete(':roleUUID/action/:actionUUID')
   async removeRoleAction(
-    @Param('roleId') roleId: string,
-    @Param('actionId') actionId: string,
+    @Param('roleUUID', ParseUUIDPipe) roleUUID: string,
+    @Param('actionUUID', ParseUUIDPipe) actionUUID: string,
   ): Promise<{ message: string }> {
-    const action: ActionDto = await this.actionService.getActionById(actionId);
+    const action: ActionDto =
+      await this.actionService.getActionById(actionUUID);
 
     if (!action) {
       throw new BadRequestException('Action Not Found');
     }
 
-    return await this.roleService.removeRoleAction(roleId, actionId);
+    return await this.roleService.removeRoleAction(roleUUID, actionUUID);
+  }
+
+  @RequireAction(ActionsEnum.DELETE_ROLE)
+  @Delete(':roleUUID')
+  async deleteRole(
+    @Param('roleUUID', ParseUUIDPipe) roleUUID: string,
+  ): Promise<void> {
+    await this.roleService.deleteRole(roleUUID);
   }
 }

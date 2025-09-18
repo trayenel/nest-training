@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  HttpException,
+  HttpStatus,
   Inject,
   Injectable,
   NotFoundException,
@@ -10,6 +12,7 @@ import { RoleEntity } from '../../typeorm/entities/role.entity.js';
 import { RoleActionDto } from './dto/roleAction.dto';
 import { ActionEntity } from '../../typeorm/entities/action.entity';
 import { RoleActionEntity } from '../../typeorm/entities/roleAction.entity';
+import { ExceptionHandler } from '@nestjs/core/errors/exception-handler';
 
 @Injectable()
 export class RoleService {
@@ -37,6 +40,17 @@ export class RoleService {
   }
 
   async createRole(createRoleDto: RoleDto): Promise<RoleDto> {
+    const existingRole: RoleEntity | null = await this.roleRepository.findOne({
+      where: { name: createRoleDto.name },
+    });
+
+    if (existingRole) {
+      throw new HttpException(
+        `Role ${existingRole.name} already exists`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     const roleEntity: RoleEntity = this.roleRepository.create(createRoleDto);
 
     return await this.roleRepository.save(roleEntity);
@@ -115,5 +129,17 @@ export class RoleService {
     throw new NotFoundException(
       `Action with id ${roleId} not found on role ${role.name}`,
     );
+  }
+
+  async deleteRole(roleId: string): Promise<void> {
+    const role: RoleEntity | null = await this.roleRepository.findOne({
+      where: { roleId: roleId },
+    });
+
+    if (!role) {
+      throw new NotFoundException(`Role with id ${roleId} not found`);
+    }
+
+    await this.roleRepository.delete(roleId);
   }
 }

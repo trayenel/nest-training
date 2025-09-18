@@ -1,6 +1,4 @@
 import { UserService } from './user.service.js';
-import type { UserRequestDto } from './dto/userRequest.dto.js';
-import { UserResponseDto } from './dto/userResponse.dto.js';
 import { ActionsEnum } from '../../shared/models/enums/actions.enum.js';
 import { RequireAction } from '../../shared/decorators/actions.decorator.js';
 import { RoleGuard } from '../auth/guards/role.guard.js';
@@ -11,61 +9,59 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   Put,
   UseGuards,
 } from '@nestjs/common';
+import { UserResponseDto } from './dto/userResponse.dto';
+import { UserRequestDto } from './dto/userRequest.dto';
+import { Public } from '../../shared/decorators/public.decorator';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @UseGuards(JwtAuthGuard, RoleGuard)
   @RequireAction(ActionsEnum.READ_USER)
   @Get('/')
   async getAllUsers(): Promise<UserResponseDto[]> {
     return await this.userService.getAllUsers();
   }
 
-  @UseGuards(JwtAuthGuard, RoleGuard)
   @RequireAction(ActionsEnum.READ_USER)
-  @Get('/:id')
-  async getUserById(@Param('id') id: string): Promise<UserResponseDto> {
-    return await this.userService.getUserById(id);
+  @Get('/:uuid')
+  async getUserById(@Param('uuid') uuid: string): Promise<UserResponseDto> {
+    return await this.userService.getUserById(uuid);
   }
 
-  @UseGuards(JwtAuthGuard, RoleGuard)
   @RequireAction(ActionsEnum.DELETE_USER)
-  @Delete('/:id')
-  async deleteUser(@Param('id') id: string): Promise<void> {
-    return await this.userService.deleteUserById(id);
+  @Delete('/:uuid')
+  async deleteUser(@Param('uuid', ParseUUIDPipe) uuid: string): Promise<void> {
+    return await this.userService.deleteUserById(uuid);
   }
 
-  @UseGuards(JwtAuthGuard, RoleGuard)
   @RequireAction(ActionsEnum.CREATE_USER)
   @Post('/')
   async createUser(@Body() user: UserRequestDto): Promise<UserRequestDto> {
     return await this.userService.createUser(user);
   }
 
-  @UseGuards(JwtAuthGuard, RoleGuard)
   @RequireAction(ActionsEnum.UPDATE_USER)
-  @Put('/:id')
+  @Put('/:uuid')
   async updateUser(
-    @Param('id') id: string,
+    @Param('uuid', ParseUUIDPipe) uuid: string,
     @Body() user: UserRequestDto,
   ): Promise<UserResponseDto> {
-    return await this.userService.updateUser(id, user);
+    return await this.userService.updateUser(uuid, user);
   }
 
-  @UseGuards(JwtAuthGuard, RoleGuard)
   @RequireAction(ActionsEnum.UPDATE_USER)
-  @Patch('/:id')
+  @Patch('/:uuid')
   async patchUser(
-    @Param('id') id: string,
+    @Param('uuid', ParseUUIDPipe) uuid: string,
     @Body() user: UserRequestDto,
   ): Promise<UserResponseDto> {
-    return await this.userService.patchUser(id, user);
+    return await this.userService.patchUser(uuid, user);
   }
 }

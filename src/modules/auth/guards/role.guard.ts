@@ -1,8 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { ActionsEnum } from '../../../shared/models/enums/actions.enum.js';
-import { RequireAction } from '../../../shared/decorators/actions.decorator.js';
-import { UserService } from '../../users/user.service.js';
+import { ActionsEnum } from '../../../shared/models/enums/actions.enum';
+import { RequireAction } from '../../../shared/decorators/actions.decorator';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
@@ -20,10 +19,6 @@ export class RoleGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-
-    if (!user) {
-      return false;
-    }
 
     return user.actions.includes(requiredAction);
   }
