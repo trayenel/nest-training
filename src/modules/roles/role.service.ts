@@ -18,7 +18,7 @@ import { ExceptionHandler } from '@nestjs/core/errors/exception-handler';
 export class RoleService {
   constructor(
     @Inject('ROLE_REPOSITORY') private roleRepository: Repository<RoleEntity>,
-    @Inject('ROLEACTION_REPOSITORY')
+    @Inject('ROLE_ACTION_REPOSITORY')
     private roleActionRepository: Repository<RoleActionEntity>,
   ) {}
 

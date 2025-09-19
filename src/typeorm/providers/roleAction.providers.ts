@@ -3,7 +3,7 @@ import { RoleActionEntity } from '../entities/roleAction.entity';
 
 export const roleActionProviders = [
   {
-    provide: 'ROLEACTION_REPOSITORY',
+    provide: 'ROLE_ACTION_REPOSITORY',
     useFactory: (dataSource: DataSource) =>
       dataSource.getRepository(RoleActionEntity),
     inject: ['DATA_SOURCE'],
