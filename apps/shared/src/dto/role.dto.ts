@@ -1,4 +1,4 @@
-import { ActionDto } from './action.dto.js';
+import { ActionDto } from './action.dto';
 import {
   IsArray,
   IsNotEmpty,

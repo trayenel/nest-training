@@ -8,8 +8,8 @@ import {
 } from '@nestjs/common';
 import { RoleEntity } from '../../typeorm/entities/role.entity';
 import { RoleActionEntity } from '../../typeorm/entities/roleAction.entity';
-import { RoleDto } from '../../../../shared/dto/role.dto';
-import { RoleActionDto } from '../../../../shared/dto/roleAction.dto';
+import { RoleDto } from '../../../../shared/src/dto/role.dto';
+import { RoleActionDto } from '../../../../shared/src/dto/roleAction.dto';
 import { ActionEntity } from '../../typeorm/entities/action.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 

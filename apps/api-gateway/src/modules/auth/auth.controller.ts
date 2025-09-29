@@ -1,9 +1,15 @@
-import { Body, Controller, HttpCode, Post, Get, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+  Get,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
-import { LoginDataDTO } from '../../../../shared/dto/loginData.dto';
-import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { LoginDataDTO } from '@nest-training/shared/dist';
 
 @Controller()
 export class AuthController {

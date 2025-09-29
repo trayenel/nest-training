@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { map } from 'rxjs';
-import { LoginDataDTO } from '../../../../shared/dto/loginData.dto';
+import { LoginDataDTO } from '../../../../shared/src/dto/loginData.dto';
 
 @Injectable()
 export class AuthService {

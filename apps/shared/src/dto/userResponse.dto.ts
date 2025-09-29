@@ -1,4 +1,4 @@
-import { RoleDto } from './role.dto.js';
+import { RoleDto } from './role.dto';
 import {
   IsArray,
   IsNotEmpty,

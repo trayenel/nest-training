@@ -1,9 +1,6 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 // import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
-import { JwtAuthGuard } from '../../api-gateway/src/modules/auth/guards/jwt-auth.guard';
-import { RoleGuard } from '../../api-gateway/src/modules/auth/guards/role.guard';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { resolve } from 'path';
 import * as dotenv from 'dotenv';
@@ -32,14 +29,6 @@ async function bootstrap() {
 
   // const documentFactory = () => SwaggerModule.createDocument(app, config);
   // SwaggerModule.setup('api', app, documentFactory);
-
-  app.useGlobalPipes(new ValidationPipe());
-
-  const reflector = app.get(Reflector);
-  const jwtAuthGuard = new JwtAuthGuard(reflector);
-  const roleGuard = new RoleGuard(reflector);
-
-  app.useGlobalGuards(jwtAuthGuard, roleGuard);
 
   await app.listen();
 }

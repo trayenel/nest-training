@@ -7,7 +7,7 @@ import {
 import { Repository } from 'typeorm';
 import { UserEntity } from '../../typeorm/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
-import { UserResponseDto } from '../../../../shared/dto/userResponse.dto';
+import { UserResponseDto } from '@nest-training/shared/dist';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()

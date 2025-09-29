@@ -1,16 +1,10 @@
 import {
   Controller,
-  HttpCode,
-  Post,
-  UseGuards,
-  Request,
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './guards/local-auth.guard';
-import { Public } from '../../../../shared/decorators/public.decorator';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { UserResponseDto } from '../../../../shared/dto/userResponse.dto';
+import { UserResponseDto } from '@nest-training/shared/dist';
 
 @Controller('auth')
 export class AuthController {

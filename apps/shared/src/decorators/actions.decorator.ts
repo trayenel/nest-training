@@ -1,4 +1,4 @@
-import { ActionsEnum } from '../../auth-service/src/shared/models/enums/actions.enum.js';
+import { ActionsEnum } from '../models/enums/actions.enum';
 import { Reflector } from '@nestjs/core';
 
 export const RequireAction = Reflector.createDecorator<ActionsEnum>();
