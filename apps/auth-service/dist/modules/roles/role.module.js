@@ -8,28 +8,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RoleModule = void 0;
 const common_1 = require("@nestjs/common");
-const database_module_1 = require("../../typeorm/database.module");
 const action_module_1 = require("../actions/action.module");
 const role_controller_1 = require("./role.controller");
 const role_service_1 = require("./role.service");
 const action_service_1 = require("../actions/action.service");
-const role_providers_1 = require("../../typeorm/providers/role.providers");
-const action_providers_1 = require("../../typeorm/providers/action.providers");
-const roleAction_providers_1 = require("../../typeorm/providers/roleAction.providers");
+const typeorm_1 = require("@nestjs/typeorm");
+const action_entity_1 = require("../../typeorm/entities/action.entity");
+const roleAction_entity_1 = require("../../typeorm/entities/roleAction.entity");
+const role_entity_1 = require("../../typeorm/entities/role.entity");
 let RoleModule = class RoleModule {
 };
 exports.RoleModule = RoleModule;
 exports.RoleModule = RoleModule = __decorate([
     (0, common_1.Module)({
-        imports: [database_module_1.DatabaseModule, action_module_1.ActionModule],
-        controllers: [role_controller_1.RoleController],
-        providers: [
-            role_service_1.RoleService,
-            action_service_1.ActionService,
-            ...role_providers_1.roleProviders,
-            ...action_providers_1.actionProviders,
-            ...roleAction_providers_1.roleActionProviders,
+        imports: [
+            action_module_1.ActionModule,
+            typeorm_1.TypeOrmModule.forFeature([role_entity_1.RoleEntity, action_entity_1.ActionEntity, roleAction_entity_1.RoleActionEntity]),
         ],
+        controllers: [role_controller_1.RoleController],
+        providers: [role_service_1.RoleService, action_service_1.ActionService],
     })
 ], RoleModule);
 //# sourceMappingURL=role.module.js.map

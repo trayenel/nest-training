@@ -1,7 +1,6 @@
 import {
   HttpException,
   HttpStatus,
-  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -9,11 +8,13 @@ import { Repository } from 'typeorm';
 import { UserEntity } from '../../typeorm/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { UserResponseDto } from '../users/dto/userResponse.dto';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject('USER_REPOSITORY') private userRepository: Repository<UserEntity>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
     private jwtService: JwtService,
   ) {}
 

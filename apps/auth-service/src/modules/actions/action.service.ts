@@ -1,22 +1,20 @@
 import {
   HttpException,
   HttpStatus,
-  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { DeleteResult, Repository } from 'typeorm';
 import { ActionEntity } from '../../typeorm/entities/action.entity.js';
 import { ActionDto } from './dto/action.dto.js';
-import { ActionsEnum } from '../../shared/models/enums/actions.enum';
 import { ActionUpdateDTO } from './dto/action-update.dto';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ActionService {
   constructor(
-    @Inject('ACTION_REPOSITORY')
-    private readonly actionRepository: Repository<ActionEntity>,
-  ) {}
+    @InjectRepository(ActionEntity)
+    private readonly actionRepository: Repository<ActionEntity>) {}
 
   async getAllActions(): Promise<ActionDto[]> {
     return (await this.actionRepository.find()) as ActionDto[];

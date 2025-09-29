@@ -15,6 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
+const user_entity_1 = require("../../typeorm/entities/user.entity");
+const userRole_entity_1 = require("../../typeorm/entities/userRole.entity");
+const typeorm_2 = require("@nestjs/typeorm");
 let UserService = class UserService {
     usersRepository;
     userRoleRepository;
@@ -131,8 +134,8 @@ let UserService = class UserService {
 exports.UserService = UserService;
 exports.UserService = UserService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)('USER_REPOSITORY')),
-    __param(1, (0, common_1.Inject)('USER_ROLE_REPOSITORY')),
+    __param(0, (0, typeorm_2.InjectRepository)(user_entity_1.UserEntity)),
+    __param(1, (0, typeorm_2.InjectRepository)(userRole_entity_1.UserRoleEntity)),
     __metadata("design:paramtypes", [typeorm_1.Repository,
         typeorm_1.Repository])
 ], UserService);

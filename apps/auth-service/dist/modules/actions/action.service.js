@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ActionService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
+const action_entity_js_1 = require("../../typeorm/entities/action.entity.js");
+const typeorm_2 = require("@nestjs/typeorm");
 let ActionService = class ActionService {
     actionRepository;
     constructor(actionRepository) {
@@ -73,7 +75,7 @@ let ActionService = class ActionService {
 exports.ActionService = ActionService;
 exports.ActionService = ActionService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)('ACTION_REPOSITORY')),
+    __param(0, (0, typeorm_2.InjectRepository)(action_entity_js_1.ActionEntity)),
     __metadata("design:paramtypes", [typeorm_1.Repository])
 ], ActionService);
 //# sourceMappingURL=action.service.js.map

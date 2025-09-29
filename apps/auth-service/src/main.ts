@@ -1,19 +1,26 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 // import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import dotenv from 'dotenv';
 import { ValidationPipe } from '@nestjs/common';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import { RoleGuard } from './modules/auth/guards/role.guard';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { resolve } from 'path';
+import * as dotenv from 'dotenv';
 
 async function bootstrap() {
-  dotenv.config();
+  const envPath = resolve(__dirname, '../.env.auth-service');
+
+  dotenv.config({ path: envPath });
 
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
       transport: Transport.TCP,
+      options: {
+        host: '127.0.0.1',
+        port: 3301,
+      },
     },
   );
 

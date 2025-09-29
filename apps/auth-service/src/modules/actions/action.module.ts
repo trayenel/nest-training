@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from '../../typeorm/database.module';
 import { ActionController } from './action.controller';
 import { ActionService } from './action.service';
-import { actionProviders } from '../../typeorm/providers/action.providers';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ActionEntity } from '../../typeorm/entities/action.entity';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [TypeOrmModule.forFeature([ActionEntity])],
   controllers: [ActionController],
-  providers: [ActionService, ...actionProviders],
+  providers: [ActionService],
 })
 export class ActionModule {}

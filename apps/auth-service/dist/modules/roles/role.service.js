@@ -15,6 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RoleService = void 0;
 const typeorm_1 = require("typeorm");
 const common_1 = require("@nestjs/common");
+const role_entity_1 = require("../../typeorm/entities/role.entity");
+const roleAction_entity_1 = require("../../typeorm/entities/roleAction.entity");
+const typeorm_2 = require("@nestjs/typeorm");
 let RoleService = class RoleService {
     roleRepository;
     roleActionRepository;
@@ -105,8 +108,8 @@ let RoleService = class RoleService {
 exports.RoleService = RoleService;
 exports.RoleService = RoleService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)('ROLE_REPOSITORY')),
-    __param(1, (0, common_1.Inject)('ROLE_ACTION_REPOSITORY')),
+    __param(0, (0, typeorm_2.InjectRepository)(role_entity_1.RoleEntity)),
+    __param(1, (0, typeorm_2.InjectRepository)(roleAction_entity_1.RoleActionEntity)),
     __metadata("design:paramtypes", [typeorm_1.Repository,
         typeorm_1.Repository])
 ], RoleService);

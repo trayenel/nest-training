@@ -1,17 +1,19 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { DeleteResult, Repository } from 'typeorm';
 import { UserEntity } from '../../typeorm/entities/user.entity';
 import { UserRoleEntity } from '../../typeorm/entities/userRole.entity';
 import { UserResponseDto } from './dto/userResponse.dto';
 import { UserRequestDto } from './dto/userRequest.dto';
 import { RoleEntity } from '../../typeorm/entities/role.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UserService {
   constructor(
-    @Inject('USER_REPOSITORY')
+    @InjectRepository(UserEntity)
     private readonly usersRepository: Repository<UserEntity>,
-    @Inject('USER_ROLE_REPOSITORY')
+
+    @InjectRepository(UserRoleEntity)
     private readonly userRoleRepository: Repository<UserRoleEntity>,
   ) {}
 

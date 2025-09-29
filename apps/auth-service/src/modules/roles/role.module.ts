@@ -1,22 +1,19 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from '../../typeorm/database.module';
 import { ActionModule } from '../actions/action.module';
 import { RoleController } from './role.controller';
 import { RoleService } from './role.service';
 import { ActionService } from '../actions/action.service';
-import { roleProviders } from '../../typeorm/providers/role.providers';
-import { actionProviders } from '../../typeorm/providers/action.providers';
-import { roleActionProviders } from '../../typeorm/providers/roleAction.providers';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ActionEntity } from '../../typeorm/entities/action.entity';
+import { RoleActionEntity } from '../../typeorm/entities/roleAction.entity';
+import { RoleEntity } from '../../typeorm/entities/role.entity';
 
 @Module({
-  imports: [DatabaseModule, ActionModule],
-  controllers: [RoleController],
-  providers: [
-    RoleService,
-    ActionService,
-    ...roleProviders,
-    ...actionProviders,
-    ...roleActionProviders,
+  imports: [
+    ActionModule,
+    TypeOrmModule.forFeature([RoleEntity, ActionEntity, RoleActionEntity]),
   ],
+  controllers: [RoleController],
+  providers: [RoleService, ActionService],
 })
 export class RoleModule {}

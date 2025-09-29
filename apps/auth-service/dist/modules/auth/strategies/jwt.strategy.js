@@ -18,6 +18,8 @@ const passport_1 = require("@nestjs/passport");
 const passport_jwt_1 = require("passport-jwt");
 const config_1 = require("@nestjs/config");
 const typeorm_1 = require("typeorm");
+const user_entity_1 = require("../../../typeorm/entities/user.entity");
+const typeorm_2 = require("@nestjs/typeorm");
 let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy) {
     configService;
     userRepository;
@@ -53,7 +55,7 @@ let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(pas
 exports.JwtStrategy = JwtStrategy;
 exports.JwtStrategy = JwtStrategy = __decorate([
     (0, common_1.Injectable)(),
-    __param(1, (0, common_1.Inject)('USER_REPOSITORY')),
+    __param(1, (0, typeorm_2.InjectRepository)(user_entity_1.UserEntity)),
     __metadata("design:paramtypes", [config_1.ConfigService,
         typeorm_1.Repository])
 ], JwtStrategy);

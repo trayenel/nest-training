@@ -8,19 +8,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersModule = void 0;
 const common_1 = require("@nestjs/common");
-const database_module_1 = require("../../typeorm/database.module");
 const user_controller_1 = require("./user.controller");
 const user_service_1 = require("./user.service");
-const user_providers_1 = require("../../typeorm/providers/user.providers");
-const userRole_providers_1 = require("../../typeorm/providers/userRole.providers");
+const user_entity_1 = require("../../typeorm/entities/user.entity");
+const userRole_entity_1 = require("../../typeorm/entities/userRole.entity");
+const typeorm_1 = require("@nestjs/typeorm");
 let UsersModule = class UsersModule {
 };
 exports.UsersModule = UsersModule;
 exports.UsersModule = UsersModule = __decorate([
     (0, common_1.Module)({
-        imports: [database_module_1.DatabaseModule],
+        imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity, userRole_entity_1.UserRoleEntity])],
         controllers: [user_controller_1.UserController],
-        providers: [user_service_1.UserService, ...user_providers_1.userProviders, ...userRole_providers_1.userRoleProviders],
+        providers: [user_service_1.UserService],
     })
 ], UsersModule);
 //# sourceMappingURL=user.module.js.map

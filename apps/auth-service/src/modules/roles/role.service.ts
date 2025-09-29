@@ -3,7 +3,6 @@ import {
   BadRequestException,
   HttpException,
   HttpStatus,
-  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -12,12 +11,15 @@ import { RoleActionEntity } from '../../typeorm/entities/roleAction.entity';
 import { RoleDto } from './dto/role.dto';
 import { RoleActionDto } from './dto/roleAction.dto';
 import { ActionEntity } from '../../typeorm/entities/action.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class RoleService {
   constructor(
-    @Inject('ROLE_REPOSITORY') private roleRepository: Repository<RoleEntity>,
-    @Inject('ROLE_ACTION_REPOSITORY')
+    @InjectRepository(RoleEntity)
+    private roleRepository: Repository<RoleEntity>,
+
+    @InjectRepository(RoleActionEntity)
     private roleActionRepository: Repository<RoleActionEntity>,
   ) {}
 

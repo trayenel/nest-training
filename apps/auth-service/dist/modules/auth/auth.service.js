@@ -15,7 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
+const user_entity_1 = require("../../typeorm/entities/user.entity");
 const jwt_1 = require("@nestjs/jwt");
+const typeorm_2 = require("@nestjs/typeorm");
 let AuthService = class AuthService {
     userRepository;
     jwtService;
@@ -44,7 +46,7 @@ let AuthService = class AuthService {
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)('USER_REPOSITORY')),
+    __param(0, (0, typeorm_2.InjectRepository)(user_entity_1.UserEntity)),
     __metadata("design:paramtypes", [typeorm_1.Repository,
         jwt_1.JwtService])
 ], AuthService);

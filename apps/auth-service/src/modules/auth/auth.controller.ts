@@ -1,25 +1,33 @@
-import { Controller, HttpCode, Post, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  HttpCode,
+  Post,
+  UseGuards,
+  Request,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Public } from '../../shared/decorators/public.decorator';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+import { UserResponseDto } from '../users/dto/userResponse.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @HttpCode(200)
-  @UseGuards(LocalAuthGuard)
   @Public()
-  @Post('/login')
-  async login(@Request() req): Promise<any> {
-    return await this.authService.login(req.user);
-  }
+  @MessagePattern({ cmd: 'login' })
+  async login(@Payload() data): Promise<any> {
+    const user: UserResponseDto = await this.authService.validateUser(
+      data.username,
+      data.password,
+    );
 
-  @HttpCode(200)
-  @UseGuards(LocalAuthGuard)
-  @Public()
-  @Post('/logout')
-  async logout(@Request() req): Promise<any> {
-    return req.logout();
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
+    return await this.authService.login(user);
   }
 }

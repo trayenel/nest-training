@@ -13,13 +13,17 @@ const auth_module_1 = require("./modules/auth/auth.module");
 const user_module_1 = require("./modules/users/user.module");
 const role_module_1 = require("./modules/roles/role.module");
 const action_module_1 = require("./modules/actions/action.module");
+const database_module_1 = require("./typeorm/database.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            config_1.ConfigModule.forRoot({ isGlobal: true }),
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+            }),
+            database_module_1.DatabaseModule,
             auth_module_1.AuthModule,
             user_module_1.UsersModule,
             role_module_1.RoleModule,
