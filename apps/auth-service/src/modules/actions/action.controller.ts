@@ -10,9 +10,9 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ActionUpdateDTO } from './dto/action-update.dto';
+import { ActionUpdateDTO } from '../../../../shared/dto/action-update.dto';
 import { ActionService } from './action.service';
-import { ActionDto } from './dto/action.dto';
+import { ActionDto } from '../../../../shared/dto/action.dto';
 
 @Controller('actions')
 export class ActionController {

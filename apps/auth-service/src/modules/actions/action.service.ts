@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { DeleteResult, Repository } from 'typeorm';
 import { ActionEntity } from '../../typeorm/entities/action.entity.js';
-import { ActionDto } from './dto/action.dto.js';
-import { ActionUpdateDTO } from './dto/action-update.dto';
+import { ActionDto } from '../../../../shared/dto/action.dto.js';
+import { ActionUpdateDTO } from '../../../../shared/dto/action-update.dto.js';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()

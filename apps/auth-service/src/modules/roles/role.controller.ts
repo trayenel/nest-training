@@ -1,4 +1,4 @@
-import { RequireAction } from '../../shared/decorators/actions.decorator';
+import { RequireAction } from '../../../../shared/decorators/actions.decorator';
 import {
   BadRequestException,
   Body,
@@ -12,9 +12,9 @@ import {
 import { RoleService } from './role.service';
 import { ActionService } from '../actions/action.service';
 import { ActionsEnum } from '../../shared/models/enums/actions.enum';
-import { RoleDto } from './dto/role.dto';
-import { RoleActionDto } from './dto/roleAction.dto';
-import { ActionDto } from '../actions/dto/action.dto';
+import { RoleDto } from '../../../../shared/dto/role.dto';
+import { RoleActionDto } from '../../../../shared/dto/roleAction.dto';
+import { ActionDto } from '../../../../shared/dto/action.dto';
 
 @Controller('role')
 export class RoleController {

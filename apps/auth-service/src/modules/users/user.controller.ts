@@ -1,4 +1,4 @@
-import { RequireAction } from '../../shared/decorators/actions.decorator';
+import { RequireAction } from '../../../../shared/decorators/actions.decorator';
 import { ActionsEnum } from '../../shared/models/enums/actions.enum';
 import {
   Body,
@@ -12,8 +12,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserResponseDto } from './dto/userResponse.dto';
-import { UserRequestDto } from './dto/userRequest.dto';
+import { UserResponseDto } from '../../../../shared/dto/userResponse.dto';
+import { UserRequestDto } from '../../../../shared/dto/userRequest.dto';
 
 @Controller('users')
 export class UserController {
