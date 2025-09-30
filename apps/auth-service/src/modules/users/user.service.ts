@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { DeleteResult, Repository } from 'typeorm';
 import { UserEntity } from '../../typeorm/entities/user.entity';
 import { UserRoleEntity } from '../../typeorm/entities/userRole.entity';
-import { UserResponseDto } from '../../../../shared/src/dto/userResponse.dto';
-import { UserRequestDto } from '../../../../shared/src/dto/userRequest.dto';
+import { UserResponseDto } from '@nest-training/shared';
+import { UserRequestDto } from '@nest-training/shared';
 import { RoleEntity } from '../../typeorm/entities/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 

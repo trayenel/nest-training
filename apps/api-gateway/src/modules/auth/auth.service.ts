@@ -1,22 +1,26 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { map } from 'rxjs';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { LoginDataDTO } from '@nest-training/shared';
+import { catchError } from 'rxjs';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject('AUTH_SERVICE') private readonly authService: ClientProxy,
+    @Inject('AUTH_SERVICE') private readonly authClient: ClientProxy,
   ) {}
 
   login(loginData: LoginDataDTO) {
     const pattern = { cmd: 'login' };
 
-    return this.authService
+    return this.authClient
       .send(pattern, {
         username: loginData.username,
         password: loginData.password,
       })
-      .pipe(map((res) => res));
+      .pipe(
+        catchError((err) => {
+          throw new RpcException(err);
+        }),
+      );
   }
 }

@@ -1,4 +1,4 @@
-import { RequireAction } from '../../../../shared/src/decorators/actions.decorator';
+import { RequireAction } from '@nest-training/shared';
 import {
   BadRequestException,
   Body,
@@ -11,10 +11,10 @@ import {
 } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { ActionService } from '../actions/action.service';
-import { ActionsEnum } from '../../../../shared/src/models/enums/actions.enum';
-import { RoleDto } from '../../../../shared/src/dto/role.dto';
-import { RoleActionDto } from '../../../../shared/src/dto/roleAction.dto';
-import { ActionDto } from '../../../../shared/src/dto/action.dto';
+import { ActionsEnum } from '@nest-training/shared';
+import { RoleDto } from '@nest-training/shared';
+import { RoleActionDto } from '@nest-training/shared';
+import { ActionDto } from '@nest-training/shared';
 
 @Controller('role')
 export class RoleController {

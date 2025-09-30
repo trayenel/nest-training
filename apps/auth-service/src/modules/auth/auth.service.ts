@@ -1,14 +1,10 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../../typeorm/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
-import { UserResponseDto } from '@nest-training/shared/dist';
+import { UserResponseDto } from '@nest-training/shared';
 import { InjectRepository } from '@nestjs/typeorm';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class AuthService {
@@ -26,12 +22,12 @@ export class AuthService {
       name: username,
     });
 
-    if (!user) {
-      throw new NotFoundException('User does not exist');
-    }
-
-    if (user?.password != _password) {
-      throw new HttpException('Invalid Password', HttpStatus.BAD_REQUEST);
+    if (!user || user?.password != _password) {
+      throw new RpcException({
+        message: 'Invalid username or password',
+        error: 'Unauthorized',
+        statusCode: 401,
+      });
     }
 
     const { password, ...results } = user;
