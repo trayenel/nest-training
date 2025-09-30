@@ -9,7 +9,7 @@ import {
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { LoginDataDTO } from '@nest-training/shared/dist';
+import { LoginDataDTO } from '@nest-training/shared';
 
 @Controller()
 export class AuthController {
