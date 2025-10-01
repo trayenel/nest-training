@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserResponseDto } from '@nest-training/shared';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RpcException } from '@nestjs/microservices';
+import { RpcErrorResponseDto } from '@nest-training/shared';
 
 @Injectable()
 export class AuthService {
@@ -23,11 +24,12 @@ export class AuthService {
     });
 
     if (!user || user?.password != _password) {
-      throw new RpcException({
+      const errorObject: RpcErrorResponseDto = {
         message: 'Invalid username or password',
         error: 'Unauthorized',
         statusCode: 401,
-      });
+      };
+      throw new RpcException(errorObject);
     }
 
     const { password, ...results } = user;
