@@ -9,7 +9,7 @@ import {
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { LoginDataDTO } from '@nest-training/shared';
+import { LoginDataDto } from '@nest-training/shared';
 
 @Controller()
 export class AuthController {
@@ -17,14 +17,14 @@ export class AuthController {
 
   @HttpCode(200)
   @Post('/login')
-  getHello(@Body() loginData: LoginDataDTO): Observable<any> {
+  getHello(@Body() loginData: LoginDataDto): Observable<any> {
     return this.authService.login(loginData);
   }
 
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   @Get('/login')
-  getHello2(@Body() loginData: LoginDataDTO): Observable<any> {
+  getHello2(@Body() loginData: LoginDataDto): Observable<any> {
     return this.authService.login(loginData);
   }
 }

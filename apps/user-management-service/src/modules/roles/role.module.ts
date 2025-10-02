@@ -5,7 +5,7 @@ import { RoleService } from './role.service';
 import { ActionService } from '../actions/action.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ActionEntity } from '../../typeorm/entities/action.entity';
-import { RoleActionEntity } from '../../typeorm/entities/roleAction.entity';
+import { RoleActionEntity } from '../../typeorm/entities/role-action.entity';
 import { RoleEntity } from '../../typeorm/entities/role.entity';
 
 @Module({

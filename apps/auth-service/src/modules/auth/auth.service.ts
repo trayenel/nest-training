@@ -1,17 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { UserEntity } from '../../typeorm/entities/user.entity';
+import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserResponseDto } from '@nest-training/shared';
-import { InjectRepository } from '@nestjs/typeorm';
-import { RpcException } from '@nestjs/microservices';
-import { RpcErrorResponseDto } from '@nest-training/shared';
+import { RpcErrorResponseDto, UserResponseDto } from '@nest-training/shared';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+    @Inject('USER_SERVICE') private readonly userClient: ClientProxy,
     private jwtService: JwtService,
   ) {}
 
@@ -19,22 +15,26 @@ export class AuthService {
     username: string,
     _password: string,
   ): Promise<UserResponseDto> {
-    const user: UserEntity | null = await this.userRepository.findOneBy({
-      name: username,
-    });
+    const pattern = { cmd: 'getUserByName' };
+    const errorObject: RpcErrorResponseDto = {
+      message: 'Invalid username or password',
+      error: 'Unauthorized',
+      statusCode: 401,
+    };
 
-    if (!user || user?.password != _password) {
-      const errorObject: RpcErrorResponseDto = {
-        message: 'Invalid username or password',
-        error: 'Unauthorized',
-        statusCode: 401,
-      };
+    try {
+      const user: UserResponseDto = await lastValueFrom(
+        this.userClient.send(pattern, username),
+      );
+
+      if (user?.password != _password) {
+        throw new RpcException(errorObject);
+      }
+
+      return user;
+    } catch {
       throw new RpcException(errorObject);
     }
-
-    const { password, ...results } = user;
-
-    return results;
   }
 
   login(user: UserResponseDto): any {

@@ -1,11 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DeleteResult, Repository } from 'typeorm';
 import { UserEntity } from '../../typeorm/entities/user.entity';
-import { UserRoleEntity } from '../../typeorm/entities/userRole.entity';
-import { UserResponseDto } from '@nest-training/shared';
-import { UserRequestDto } from '@nest-training/shared';
+import { UserRoleEntity } from '../../typeorm/entities/user-role.entity';
 import { RoleEntity } from '../../typeorm/entities/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import {
+  RpcErrorResponseDto,
+  UserRequestDto,
+  UserResponseDto,
+} from '@nest-training/shared';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class UserService {
@@ -26,9 +30,7 @@ export class UserService {
       throw new NotFoundException();
     }
 
-    return users.map(({ password, ...rest }: UserEntity): UserResponseDto => {
-      return rest as UserResponseDto;
-    });
+    return users;
   }
 
   async getUserById(id: string): Promise<UserResponseDto> {
@@ -41,9 +43,7 @@ export class UserService {
 
     if (!user) throw new NotFoundException(`User with ID ${id} not found`);
 
-    const { password, ...results } = user;
-
-    return results;
+    return user as UserResponseDto;
   }
 
   async getUserByName(name: string): Promise<UserResponseDto> {
@@ -51,11 +51,17 @@ export class UserService {
       name: name,
     });
 
-    if (!user) throw new NotFoundException(`User ${name} not found`);
+    if (!user) {
+      const errorObject: RpcErrorResponseDto = {
+        message: `User ${name} not found`,
+        error: 'Not found',
+        statusCode: 404,
+      };
 
-    const { password, ...results } = user;
+      throw new RpcException(errorObject);
+    }
 
-    return results;
+    return user;
   }
 
   async createUser(user: UserRequestDto): Promise<UserResponseDto> {
@@ -89,9 +95,7 @@ export class UserService {
     );
     await this.usersRepository.save(updatedUser);
 
-    const { password, ...results } = updatedUser;
-
-    return results;
+    return updatedUser;
   }
 
   async patchUser(
@@ -110,9 +114,7 @@ export class UserService {
     );
     await this.usersRepository.save(updatedUser);
 
-    const { password, ...results } = updatedUser;
-
-    return results;
+    return updatedUser;
   }
 
   async addUserRole(userId: string, roleId: string): Promise<UserResponseDto> {
@@ -142,7 +144,6 @@ export class UserService {
 
     return user;
   }
-
 
   async removeUserRole(
     userId: string,

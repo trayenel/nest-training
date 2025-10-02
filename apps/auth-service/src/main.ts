@@ -1,4 +1,4 @@
-import { NestFactory, Reflector } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 // import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
@@ -6,7 +6,7 @@ import { resolve } from 'path';
 import * as dotenv from 'dotenv';
 
 async function bootstrap() {
-  const envPath = resolve(__dirname, '../.env.auth-service');
+  const envPath = resolve(__dirname, '../.env');
 
   dotenv.config({ path: envPath });
 

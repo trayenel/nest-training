@@ -11,8 +11,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { ActionUpdateDTO } from '@nest-training/shared';
-import { ActionService } from './action.service';
 import { ActionDto } from '@nest-training/shared';
+import { ActionService } from './action.service';
 
 @Controller('actions')
 export class ActionController {

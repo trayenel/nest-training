@@ -23,6 +23,10 @@ export class UserResponseDto {
   @MaxLength(50)
   email: string;
 
+  @IsNotEmpty()
+  @IsString()
+  password: string;
+
   @IsOptional()
   @IsArray()
   roles?: RoleDto[];

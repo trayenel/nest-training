@@ -1,4 +1,3 @@
-import { RequireAction } from '@nest-training/shared';
 import {
   BadRequestException,
   Body,
@@ -11,10 +10,13 @@ import {
 } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { ActionService } from '../actions/action.service';
-import { ActionsEnum } from '@nest-training/shared';
-import { RoleDto } from '@nest-training/shared';
-import { RoleActionDto } from '@nest-training/shared';
-import { ActionDto } from '@nest-training/shared';
+import {
+  ActionDto,
+  ActionsEnum,
+  RequireAction,
+  RoleActionDto,
+  RoleDto,
+} from '@nest-training/shared';
 
 @Controller('role')
 export class RoleController {

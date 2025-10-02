@@ -1,4 +1,3 @@
-import { Repository } from 'typeorm';
 import {
   BadRequestException,
   HttpException,
@@ -6,12 +5,12 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { RoleEntity } from '../../typeorm/entities/role.entity';
-import { RoleActionEntity } from '../../typeorm/entities/roleAction.entity';
-import { RoleDto } from '@nest-training/shared';
-import { RoleActionDto } from '@nest-training/shared';
-import { ActionEntity } from '../../typeorm/entities/action.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { RoleEntity } from '../../typeorm/entities/role.entity';
+import { Repository } from 'typeorm';
+import { RoleActionEntity } from '../../typeorm/entities/role-action.entity';
+import { RoleActionDto, RoleDto } from '@nest-training/shared';
+import { ActionEntity } from '../../typeorm/entities/action.entity';
 
 @Injectable()
 export class RoleService {
