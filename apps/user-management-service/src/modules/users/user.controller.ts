@@ -38,7 +38,6 @@ export class UserController {
   }
 
   @MessagePattern({ cmd: 'createUser' })
-  @RequireAction(ActionsEnum.CREATE_USER)
   async createUser(@Payload() user: UserRequestDto): Promise<UserRequestDto> {
     return await this.userService.createUser(user);
   }

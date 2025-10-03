@@ -9,10 +9,13 @@ export class AuthController {
 
   @MessagePattern({ cmd: 'login' })
   async login(@Payload() data: LoginDataDto): Promise<any> {
-    const user: UserResponseDto = await this.authService.validateUser(
-      data.username,
-      data.password,
-    );
+    const user: UserResponseDto = await this.authService.validateUser(data);
+
     return await this.authService.login(user);
+  }
+
+  @MessagePattern({ cmd: "register" })
+  async register(@Payload() data: LoginDataDto) {
+    return await this.authService.register(data)
   }
 }

@@ -1,4 +1,4 @@
-import { RoleDto } from './role.dto';
+import { RoleDto } from '../role/role.dto';
 import {
   IsArray,
   IsNotEmpty,

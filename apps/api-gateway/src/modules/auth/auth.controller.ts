@@ -8,7 +8,6 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LoginDataDto } from '@nest-training/shared';
 
 @Controller()
@@ -21,10 +20,9 @@ export class AuthController {
     return this.authService.login(loginData);
   }
 
-  @HttpCode(200)
-  @UseGuards(JwtAuthGuard)
-  @Get('/login')
-  getHello2(@Body() loginData: LoginDataDto): Observable<any> {
-    return this.authService.login(loginData);
+  @HttpCode(201)
+  @Post('/register')
+  register(@Body() loginData: LoginDataDto): Observable<any> {
+    return this.authService.register(loginData);
   }
 }

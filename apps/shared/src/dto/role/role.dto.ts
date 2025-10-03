@@ -1,4 +1,4 @@
-import { ActionDto } from './action.dto';
+import { ActionDto } from '../action/action.dto';
 import {
   IsArray,
   IsNotEmpty,

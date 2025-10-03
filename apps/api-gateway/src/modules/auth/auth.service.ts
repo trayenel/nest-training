@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { LoginDataDto } from '@nest-training/shared';
-import { catchError, throwError } from 'rxjs';
+import { catchError } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +12,17 @@ export class AuthService {
   login(loginData: LoginDataDto) {
     const pattern = { cmd: 'login' };
 
+    return this.authClient.send(pattern, loginData).pipe(
+      catchError((err: RpcException) => {
+        throw new RpcException(err);
+      }),
+    );
+  }
+
+  register(loginData: LoginDataDto) {
+    const pattern = { cmd: 'register' };
+
+    console.log(loginData);
     return this.authClient.send(pattern, loginData).pipe(
       catchError((err: RpcException) => {
         throw new RpcException(err);
