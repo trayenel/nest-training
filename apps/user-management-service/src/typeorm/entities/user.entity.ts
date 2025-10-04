@@ -12,8 +12,8 @@ export class UserEntity {
   @PrimaryGeneratedColumn('uuid', { name: 'id' })
   userUUID: string;
 
-  @Column('varchar', { name: 'name', length: 50 })
-  name: string;
+  @Column('varchar', { name: 'username', length: 50 })
+  username: string;
 
   @Column('varchar', { name: 'email', length: 50 })
   email: string;

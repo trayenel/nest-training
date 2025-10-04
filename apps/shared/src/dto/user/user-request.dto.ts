@@ -10,7 +10,7 @@ export class UserRequestDto {
   @IsNotEmpty()
   @IsString()
   @MaxLength(50)
-  name: string;
+  username: string;
 
   @IsOptional()
   @IsEmail()

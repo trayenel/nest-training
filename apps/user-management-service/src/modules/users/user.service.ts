@@ -5,6 +5,7 @@ import { UserRoleEntity } from '../../typeorm/entities/user-role.entity';
 import { RoleEntity } from '../../typeorm/entities/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
+  LoginDataDto,
   RpcErrorResponseDto,
   UserRequestDto,
   UserResponseDto,
@@ -46,14 +47,14 @@ export class UserService {
     return user as UserResponseDto;
   }
 
-  async getUserByName(name: string): Promise<UserResponseDto> {
+  async getUserByName(username: string): Promise<UserResponseDto> {
     const user: UserEntity | null = await this.usersRepository.findOneBy({
-      name: name,
+      username: username,
     });
 
     if (!user) {
       const errorObject: RpcErrorResponseDto = {
-        message: `User ${name} not found`,
+        message: `User ${username} not found`,
         error: 'Not found',
         statusCode: 404,
       };
@@ -64,12 +65,10 @@ export class UserService {
     return user;
   }
 
-  async createUser(user: UserRequestDto): Promise<UserResponseDto> {
+  async createUser(user: LoginDataDto): Promise<UserResponseDto> {
     const userEntity: UserEntity = this.usersRepository.create(user);
 
-    const savedUser: UserEntity = await this.usersRepository.save(userEntity);
-
-    return savedUser as UserResponseDto;
+    return await this.usersRepository.save(userEntity);
   }
 
   async deleteUserById(id: string): Promise<void> {
@@ -130,7 +129,7 @@ export class UserService {
     user.roles.forEach((role: RoleEntity) => {
       if (role.roleUUID === roleId) {
         throw new NotFoundException(
-          `User ${user.name} already has ${role.name} role`,
+          `User ${user.username} already has ${role.name} role`,
         );
       }
     });
@@ -165,13 +164,13 @@ export class UserService {
           roleId: roleId,
         });
         return {
-          message: `Role ${role.name} removed from user ${user.name}`,
+          message: `Role ${role.name} removed from user ${user.username}`,
         };
       }
     }
 
     throw new NotFoundException(
-      `Role with id ${roleId} not found on user ${user.name}`,
+      `Role with id ${roleId} not found on user ${user.username}`,
     );
   }
 }

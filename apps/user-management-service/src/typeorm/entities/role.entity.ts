@@ -19,7 +19,10 @@ export class RoleEntity {
   @JoinTable({
     name: 'role_action',
     joinColumn: { name: 'role_id', referencedColumnName: 'roleUUID' },
-    inverseJoinColumn: { name: 'action_id', referencedColumnName: 'actionUUID' },
+    inverseJoinColumn: {
+      name: 'action_id',
+      referencedColumnName: 'actionUUID',
+    },
   })
   actions: ActionEntity[];
 }

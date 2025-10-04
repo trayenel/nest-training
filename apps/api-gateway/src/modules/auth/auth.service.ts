@@ -11,9 +11,8 @@ export class AuthService {
 
   login(loginData: LoginDataDto) {
     const pattern = { cmd: 'login' };
-
     return this.authClient.send(pattern, loginData).pipe(
-      catchError((err: RpcException) => {
+      catchError((err) => {
         throw new RpcException(err);
       }),
     );
@@ -21,8 +20,6 @@ export class AuthService {
 
   register(loginData: LoginDataDto) {
     const pattern = { cmd: 'register' };
-
-    console.log(loginData);
     return this.authClient.send(pattern, loginData).pipe(
       catchError((err: RpcException) => {
         throw new RpcException(err);

@@ -2,6 +2,7 @@ import { Controller } from '@nestjs/common';
 import { UserService } from './user.service';
 import {
   ActionsEnum,
+  LoginDataDto,
   RequireAction,
   UserRequestDto,
   UserResponseDto,
@@ -38,7 +39,7 @@ export class UserController {
   }
 
   @MessagePattern({ cmd: 'createUser' })
-  async createUser(@Payload() user: UserRequestDto): Promise<UserRequestDto> {
+  async createUser(@Payload() user: LoginDataDto): Promise<UserResponseDto> {
     return await this.userService.createUser(user);
   }
 

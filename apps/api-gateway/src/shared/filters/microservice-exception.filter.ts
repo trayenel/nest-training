@@ -11,7 +11,6 @@ export class MicroserviceExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 
-    console.log(error);
 
     response.status(error.statusCode).json(error);
   }

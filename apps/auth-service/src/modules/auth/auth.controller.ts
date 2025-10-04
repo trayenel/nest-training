@@ -14,8 +14,10 @@ export class AuthController {
     return await this.authService.login(user);
   }
 
-  @MessagePattern({ cmd: "register" })
-  async register(@Payload() data: LoginDataDto) {
-    return await this.authService.register(data)
+  @MessagePattern({ cmd: 'register' })
+  async register(
+    @Payload() data: LoginDataDto,
+  ): Promise<UserResponseDto | undefined> {
+    return await this.authService.registerUser(data);
   }
 }

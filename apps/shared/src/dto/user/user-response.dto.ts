@@ -16,7 +16,7 @@ export class UserResponseDto {
   @IsNotEmpty()
   @IsString()
   @MaxLength(50)
-  name: string;
+  username: string;
 
   @IsOptional()
   @IsString()
