@@ -1,4 +1,5 @@
 export * from "./dto/auth/login-data.dto";
+export * from "./dto/auth/register-data.dto"
 export * from "./dto/role/role.dto"
 export * from "./dto/action/action.dto"
 export * from "./dto/user/user-response.dto"

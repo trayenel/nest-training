@@ -173,4 +173,8 @@ export class UserService {
       `Role with id ${roleId} not found on user ${user.username}`,
     );
   }
+
+  async getUserByEmail(email: string): Promise<UserResponseDto | null> {
+    return await this.usersRepository.findOne({ where: { email: email } });
+  }
 }

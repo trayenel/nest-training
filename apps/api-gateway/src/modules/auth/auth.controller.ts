@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
-import { LoginDataDto } from '@nest-training/shared';
+import { LoginDataDto, RegisterDataDto } from '@nest-training/shared';
 
 @Controller()
 export class AuthController {
@@ -9,13 +9,13 @@ export class AuthController {
 
   @HttpCode(200)
   @Post('/login')
-  getHello(@Body() loginData: LoginDataDto): Observable<any> {
-    return this.authService.login(loginData);
+  getHello(@Body() userDetails: LoginDataDto): Observable<any> {
+    return this.authService.login(userDetails);
   }
 
   @HttpCode(201)
   @Post('/register')
-  register(@Body() loginData: LoginDataDto): Observable<any> {
-    return this.authService.register(loginData);
+  register(@Body() userDetails: RegisterDataDto): Observable<any> {
+    return this.authService.register(userDetails);
   }
 }

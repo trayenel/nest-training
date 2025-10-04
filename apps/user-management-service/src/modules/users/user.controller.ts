@@ -72,4 +72,11 @@ export class UserController {
   ): Promise<{ message: string }> {
     return await this.userService.removeUserRole(data.userUUID, data.roleUUID);
   }
+
+  @MessagePattern({ cmd: 'getUserByEmail' })
+  async getUserByEmail(
+    @Payload() email: string,
+  ): Promise<UserResponseDto | null> {
+    return await this.userService.getUserByEmail(email);
+  }
 }

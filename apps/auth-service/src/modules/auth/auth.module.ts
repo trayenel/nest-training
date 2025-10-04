@@ -8,13 +8,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
-    ClientsModule.register([
-      {
-        name: 'USER_SERVICE',
-        transport: Transport.TCP,
-        options: { host: '127.0.0.1', port: 3302 },
-      },
-    ]),
     PassportModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
@@ -23,6 +16,13 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         signOptions: { expiresIn: '1h' },
       }),
     }),
+    ClientsModule.register([
+      {
+        name: 'USER_SERVICE',
+        transport: Transport.TCP,
+        options: { host: '127.0.0.1', port: 3302 },
+      },
+    ]),
   ],
   controllers: [AuthController],
   providers: [AuthService],

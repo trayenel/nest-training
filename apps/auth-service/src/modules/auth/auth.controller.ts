@@ -1,7 +1,11 @@
 import { Controller } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { LoginDataDto, UserResponseDto } from '@nest-training/shared';
+import {
+  LoginDataDto,
+  RegisterDataDto,
+  UserResponseDto,
+} from '@nest-training/shared';
 
 @Controller('auth')
 export class AuthController {
@@ -16,8 +20,8 @@ export class AuthController {
 
   @MessagePattern({ cmd: 'register' })
   async register(
-    @Payload() data: LoginDataDto,
+    @Payload() userDetails: RegisterDataDto,
   ): Promise<UserResponseDto | undefined> {
-    return await this.authService.registerUser(data);
+    return await this.authService.registerUser(userDetails);
   }
 }

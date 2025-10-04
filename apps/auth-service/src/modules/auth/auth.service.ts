@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import {
   LoginDataDto,
+  RegisterDataDto,
   RpcErrorResponseDto,
   UserResponseDto,
 } from '@nest-training/shared';
@@ -18,7 +19,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {
-    this.SALT_ROUNDS = Number(configService.get<number>('SALT_ROUNDS'));
+    this.SALT_ROUNDS = Number(this.configService.get<number>('SALT_ROUNDS'));
 
     if (!this.SALT_ROUNDS) {
       const errorObject: RpcErrorResponseDto = {
@@ -70,36 +71,55 @@ export class AuthService {
   }
 
   async registerUser(
-    userDetails: LoginDataDto,
+    userDetails: RegisterDataDto,
   ): Promise<UserResponseDto | undefined> {
     const pattern = { cmd: 'getUserByName' };
+    const errorObject: RpcErrorResponseDto = {
+      error: 'Conflict',
+      message: '',
+      statusCode: 409,
+    };
+    let user: UserResponseDto;
 
+    // Check if username is taken
     try {
-      const user: UserResponseDto = await lastValueFrom(
+      user = await lastValueFrom(
         this.userClient.send(pattern, userDetails.username),
       );
 
       if (user) {
-        const errorObject: RpcErrorResponseDto = {
-          message: 'Username is already taken',
-          error: 'Conflict',
-          statusCode: 409,
-        };
+        errorObject.message = 'Username is already taken';
         throw new RpcException(errorObject);
       }
     } catch (error) {
       if (error instanceof RpcException) {
         throw error;
       }
-
-      pattern.cmd = 'createUser';
-
-      userDetails.password = await bcrypt.hash(
-        userDetails.password,
-        this.SALT_ROUNDS,
+    }
+    // Check if email is taken
+    try {
+      pattern.cmd = 'getUserByEmail';
+      user = await lastValueFrom(
+        this.userClient.send(pattern, userDetails.email),
       );
 
-      return await lastValueFrom(this.userClient.send(pattern, userDetails));
+      if (user) {
+        errorObject.message = 'Email is already taken';
+        throw new RpcException(errorObject);
+      }
+    } catch (error) {
+      if (error instanceof RpcException) {
+        throw error;
+      }
     }
+    // Create new user
+    pattern.cmd = 'createUser';
+
+    userDetails.password = await bcrypt.hash(
+      userDetails.password,
+      this.SALT_ROUNDS,
+    );
+
+    return await lastValueFrom(this.userClient.send(pattern, userDetails));
   }
 }

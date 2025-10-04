@@ -10,8 +10,8 @@ export class Version01757944025045 implements MigrationInterface {
       await queryRunner.query(`
         CREATE TABLE users (
           id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-          username VARCHAR(50) NOT NULL,
-          email VARCHAR(50) UNIQUE,
+          username VARCHAR(50) UNIQUE NOT NULL,
+          email VARCHAR(50) UNIQUE NOT NULL,
           password VARCHAR(255) NOT NULL, 
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

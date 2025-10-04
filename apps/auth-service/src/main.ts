@@ -6,7 +6,7 @@ import { resolve } from 'path';
 import * as dotenv from 'dotenv';
 
 async function bootstrap() {
-  const envPath = resolve(__dirname, '../.env');
+  const envPath = resolve(__dirname, '../../.env');
 
   dotenv.config({ path: envPath });
 
