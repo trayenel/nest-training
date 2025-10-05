@@ -10,7 +10,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ActionUpdateDTO } from '@nest-training/shared';
+import { ActionUpdateDTO, ResponseMessageDto } from '@nest-training/shared';
 import { ActionDto } from '@nest-training/shared';
 import { ActionService } from './action.service';
 
@@ -54,7 +54,7 @@ export class ActionController {
   @Delete('/:id')
   async deleteActionById(
     @Param('id', ParseUUIDPipe) id: string,
-  ): Promise<{ message: string }> {
+  ): Promise<ResponseMessageDto> {
     return await this.actionService.deleteActionById(id);
   }
 }

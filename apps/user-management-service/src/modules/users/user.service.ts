@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { DeleteResult, Repository } from 'typeorm';
 import { UserEntity } from '../../typeorm/entities/user.entity';
 import { UserRoleEntity } from '../../typeorm/entities/user-role.entity';
@@ -6,6 +6,7 @@ import { RoleEntity } from '../../typeorm/entities/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   LoginDataDto,
+  ResponseMessageDto,
   RpcErrorResponseDto,
   UserRequestDto,
   UserResponseDto,
@@ -28,21 +29,33 @@ export class UserService {
     });
 
     if (!users || users.length === 0) {
-      throw new NotFoundException();
+      const errorObject: RpcErrorResponseDto = {
+        message: 'No users found',
+        error: 'Not Found',
+        statusCode: 404,
+      };
+      throw new RpcException(errorObject);
     }
 
     return users;
   }
 
-  async getUserById(id: string): Promise<UserResponseDto> {
+  async getUserByUUID(uuid: string): Promise<UserResponseDto> {
     const user: UserEntity | null = await this.usersRepository.findOne({
       where: {
-        userUUID: id,
+        userUUID: uuid,
       },
       relations: ['roles', 'roles.actions'],
     });
 
-    if (!user) throw new NotFoundException(`User with ID ${id} not found`);
+    if (!user) {
+      const errorObject: RpcErrorResponseDto = {
+        message: `User with ID ${uuid} not found`,
+        error: 'Not Found',
+        statusCode: 404,
+      };
+      throw new RpcException(errorObject);
+    }
 
     return user as UserResponseDto;
   }
@@ -55,10 +68,9 @@ export class UserService {
     if (!user) {
       const errorObject: RpcErrorResponseDto = {
         message: `User ${username} not found`,
-        error: 'Not found',
+        error: 'Not Found',
         statusCode: 404,
       };
-
       throw new RpcException(errorObject);
     }
 
@@ -67,26 +79,44 @@ export class UserService {
 
   async createUser(user: LoginDataDto): Promise<UserResponseDto> {
     const userEntity: UserEntity = this.usersRepository.create(user);
-
     return await this.usersRepository.save(userEntity);
   }
 
-  async deleteUserById(id: string): Promise<void> {
-    const result: DeleteResult = await this.usersRepository.delete(id);
-    if (!result.affected)
-      throw new NotFoundException(`User with ID ${id} not found`);
+  async deleteUserByUUID(uuid: string): Promise<ResponseMessageDto> {
+    const result: DeleteResult = await this.usersRepository.delete({
+      userUUID: uuid,
+    });
+    if (!result.affected) {
+      const errorObject: RpcErrorResponseDto = {
+        message: `User with ID ${uuid} not found`,
+        error: 'Not Found',
+        statusCode: 404,
+      };
+      throw new RpcException(errorObject);
+    }
+
+    return {
+      message: `User with UUID ${uuid} deleted successfully`,
+      statusCode: 200,
+    };
   }
 
   async updateUser(
-    id: string,
+    uuid: string,
     modifiedUser: UserRequestDto,
   ): Promise<UserResponseDto> {
     const userEntity: UserEntity | null = await this.usersRepository.findOneBy({
-      userUUID: id,
+      userUUID: uuid,
     });
 
-    if (!userEntity)
-      throw new NotFoundException(`User with id ${id} not found`);
+    if (!userEntity) {
+      const errorObject: RpcErrorResponseDto = {
+        message: `User with uuid ${uuid} not found`,
+        error: 'Not Found',
+        statusCode: 404,
+      };
+      throw new RpcException(errorObject);
+    }
 
     const updatedUser: UserEntity = this.usersRepository.merge(
       userEntity,
@@ -98,14 +128,21 @@ export class UserService {
   }
 
   async patchUser(
-    id: string,
+    uuid: string,
     partialUser: Partial<UserRequestDto>,
   ): Promise<UserResponseDto> {
     const user: UserEntity | null = await this.usersRepository.findOneBy({
-      userUUID: id,
+      userUUID: uuid,
     });
 
-    if (!user) throw new NotFoundException(`User with id ${id} not found`);
+    if (!user) {
+      const errorObject: RpcErrorResponseDto = {
+        message: `User with uuid ${uuid} not found`,
+        error: 'Not Found',
+        statusCode: 404,
+      };
+      throw new RpcException(errorObject);
+    }
 
     const updatedUser: UserEntity = this.usersRepository.merge(
       user,
@@ -123,14 +160,22 @@ export class UserService {
     });
 
     if (!user) {
-      throw new NotFoundException(`User with id ${roleId} not found`);
+      const errorObject: RpcErrorResponseDto = {
+        message: `User with id ${userId} not found`,
+        error: 'Not Found',
+        statusCode: 404,
+      };
+      throw new RpcException(errorObject);
     }
 
     user.roles.forEach((role: RoleEntity) => {
       if (role.roleUUID === roleId) {
-        throw new NotFoundException(
-          `User ${user.username} already has ${role.name} role`,
-        );
+        const errorObject: RpcErrorResponseDto = {
+          message: `User ${user.username} already has ${role.name} role`,
+          error: 'Conflict',
+          statusCode: 409,
+        };
+        throw new RpcException(errorObject);
       }
     });
 
@@ -147,14 +192,19 @@ export class UserService {
   async removeUserRole(
     userId: string,
     roleId: string,
-  ): Promise<{ message: string }> {
+  ): Promise<ResponseMessageDto> {
     const user: UserEntity | null = await this.usersRepository.findOne({
       where: { userUUID: userId },
       relations: ['roles'],
     });
 
     if (!user) {
-      throw new NotFoundException(`User with ID $ {userId} not found`);
+      const errorObject: RpcErrorResponseDto = {
+        message: `User with ID ${userId} not found`,
+        error: 'Not Found',
+        statusCode: 404,
+      };
+      throw new RpcException(errorObject);
     }
 
     for (const role of user.roles) {
@@ -165,13 +215,17 @@ export class UserService {
         });
         return {
           message: `Role ${role.name} removed from user ${user.username}`,
+          statusCode: 200,
         };
       }
     }
 
-    throw new NotFoundException(
-      `Role with id ${roleId} not found on user ${user.username}`,
-    );
+    const errorObject: RpcErrorResponseDto = {
+      message: `Role with id ${roleId} not found on user ${user.username}`,
+      error: 'Not Found',
+      statusCode: 404,
+    };
+    throw new RpcException(errorObject);
   }
 
   async getUserByEmail(email: string): Promise<UserResponseDto | null> {

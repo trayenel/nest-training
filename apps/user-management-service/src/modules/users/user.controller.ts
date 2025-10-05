@@ -1,9 +1,8 @@
 import { Controller } from '@nestjs/common';
 import { UserService } from './user.service';
 import {
-  ActionsEnum,
   LoginDataDto,
-  RequireAction,
+  ResponseMessageDto,
   UserRequestDto,
   UserResponseDto,
 } from '@nest-training/shared';
@@ -14,15 +13,13 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @MessagePattern({ cmd: 'getAllUsers' })
-  @RequireAction(ActionsEnum.READ_USER)
   async getAllUsers(): Promise<UserResponseDto[]> {
     return await this.userService.getAllUsers();
   }
 
-  @MessagePattern({ cmd: 'getUserById' })
-  @RequireAction(ActionsEnum.READ_USER)
-  async getUserById(@Payload() userUUID: string): Promise<UserResponseDto> {
-    return await this.userService.getUserById(userUUID);
+  @MessagePattern({ cmd: 'getUserByUUID' })
+  async getUserByUUID(@Payload() userUUID: string): Promise<UserResponseDto> {
+    return await this.userService.getUserByUUID(userUUID);
   }
 
   @MessagePattern({ cmd: 'getUserByName' })
@@ -32,10 +29,11 @@ export class UserController {
     return await this.userService.getUserByName(username);
   }
 
-  @MessagePattern({ cmd: 'deleteUser' })
-  @RequireAction(ActionsEnum.DELETE_USER)
-  async deleteUser(@Payload() userUUID: string): Promise<void> {
-    return await this.userService.deleteUserById(userUUID);
+  @MessagePattern({ cmd: 'deleteUserByUUID' })
+  async deleteUserByUUID(
+    @Payload() userUUID: string,
+  ): Promise<ResponseMessageDto> {
+    return await this.userService.deleteUserByUUID(userUUID);
   }
 
   @MessagePattern({ cmd: 'createUser' })
@@ -43,15 +41,14 @@ export class UserController {
     return await this.userService.createUser(user);
   }
 
-  @MessagePattern({ cmd: 'addRoleToUser' })
-  async addRoleToUser(
+  @MessagePattern({ cmd: 'addUserRole' })
+  async addUserRole(
     @Payload() data: { userUUID: string; roleUUID: string },
   ): Promise<UserResponseDto> {
     return await this.userService.addUserRole(data.userUUID, data.roleUUID);
   }
 
   @MessagePattern({ cmd: 'updateUser' })
-  @RequireAction(ActionsEnum.UPDATE_USER)
   async updateUser(
     @Payload() data: { userUUID: string; user: UserRequestDto },
   ): Promise<UserResponseDto> {
@@ -59,7 +56,6 @@ export class UserController {
   }
 
   @MessagePattern({ cmd: 'patchUser' })
-  @RequireAction(ActionsEnum.UPDATE_USER)
   async patchUser(
     @Payload() data: { userUUID: string; user: UserRequestDto },
   ): Promise<UserResponseDto> {
@@ -69,7 +65,7 @@ export class UserController {
   @MessagePattern({ cmd: 'removeUserRole' })
   async removeUserRole(
     @Payload() data: { userUUID: string; roleUUID: string },
-  ): Promise<{ message: string }> {
+  ): Promise<ResponseMessageDto> {
     return await this.userService.removeUserRole(data.userUUID, data.roleUUID);
   }
 

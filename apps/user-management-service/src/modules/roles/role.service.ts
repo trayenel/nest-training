@@ -9,7 +9,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RoleEntity } from '../../typeorm/entities/role.entity';
 import { Repository } from 'typeorm';
 import { RoleActionEntity } from '../../typeorm/entities/role-action.entity';
-import { RoleActionDto, RoleDto } from '@nest-training/shared';
+import {
+  ResponseMessageDto,
+  RoleActionDto,
+  RoleDto,
+} from '@nest-training/shared';
 import { ActionEntity } from '../../typeorm/entities/action.entity';
 
 @Injectable()
@@ -104,7 +108,7 @@ export class RoleService {
   async removeRoleAction(
     roleUUID: string,
     actionId: string,
-  ): Promise<{ message: string }> {
+  ): Promise<ResponseMessageDto> {
     const role: RoleEntity | null = await this.roleRepository.findOne({
       where: { roleUUID: roleUUID },
       relations: ['actions'],
@@ -122,6 +126,7 @@ export class RoleService {
         });
         return {
           message: `Action ${curAction.name} removed from role ${role.name}`,
+          statusCode: 200,
         };
       }
     }

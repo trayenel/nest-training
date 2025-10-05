@@ -14,6 +14,7 @@ import {
   ActionDto,
   ActionsEnum,
   RequireAction,
+  ResponseMessageDto,
   RoleActionDto,
   RoleDto,
 } from '@nest-training/shared';
@@ -71,7 +72,7 @@ export class RoleController {
   async removeRoleAction(
     @Param('roleUUID', ParseUUIDPipe) roleUUID: string,
     @Param('actionUUID', ParseUUIDPipe) actionUUID: string,
-  ): Promise<{ message: string }> {
+  ): Promise<ResponseMessageDto> {
     const action: ActionDto =
       await this.actionService.getActionById(actionUUID);
 

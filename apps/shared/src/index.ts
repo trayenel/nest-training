@@ -6,7 +6,8 @@ export * from "./dto/user/user-response.dto"
 export * from "./dto/user/user-request.dto"
 export * from "./dto/action/action-update.dto"
 export * from "./dto/role/role-action.dto"
-export * from "./dto/error/rpc-error-response.dto"
+export * from "./dto/response/rpc-error-response.dto"
+export * from "./dto/response/response-message.dto"
 
 export * from "./models/enums/actions.enum"
 

@@ -5,8 +5,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { DeleteResult, Repository } from 'typeorm';
-import { ActionDto } from '@nest-training/shared';
-import { ActionUpdateDTO } from '@nest-training/shared';
+import {
+  ActionDto,
+  ActionUpdateDTO,
+  ResponseMessageDto,
+} from '@nest-training/shared';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ActionEntity } from '../../typeorm/entities/action.entity';
 
@@ -91,13 +94,16 @@ export class ActionService {
     return this.actionRepository.save(updatedAction);
   }
 
-  async deleteActionById(id: string): Promise<{ message: string }> {
+  async deleteActionById(id: string): Promise<ResponseMessageDto> {
     const deleteResult: DeleteResult = await this.actionRepository.delete(id);
 
     if (!deleteResult.affected) {
       throw new NotFoundException();
     }
 
-    return { message: `Deleted action with id ${id}` };
+    return {
+      message: `Deleted action with id ${id}`,
+      statusCode: 200,
+    };
   }
 }
