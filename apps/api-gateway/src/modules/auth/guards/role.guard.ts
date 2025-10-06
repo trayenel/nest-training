@@ -1,6 +1,11 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { ActionsEnum, RequireAction } from '@nest-training/shared';
+import {
+  ActionsEnum,
+  RequireAction,
+  UserResponseDto,
+} from '@nest-training/shared';
+import { Request } from 'express';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
@@ -12,13 +17,23 @@ export class RoleGuard implements CanActivate {
       context.getHandler(),
     );
 
-    if (!requiredAction) {
+    const request: Request = context.switchToHttp().getRequest();
+    const user: UserResponseDto | undefined = request.user;
+
+    if (!requiredAction || user?.userUUID === request?.params?.userUUID) {
       return true;
     }
 
-    const request = context.switchToHttp().getRequest();
-    const user = request.user;
+    if (!user || !user.actions) {
+      return false;
+    }
 
-    return user.actions.includes(requiredAction);
+    for (const action of user.actions) {
+      if ((action.name as ActionsEnum) === requiredAction) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

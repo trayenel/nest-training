@@ -8,6 +8,7 @@ export * from "./dto/action/action-update.dto"
 export * from "./dto/role/role-action.dto"
 export * from "./dto/response/rpc-error-response.dto"
 export * from "./dto/response/response-message.dto"
+export * from "./dto/auth/jwt-payload.dto"
 
 export * from "./models/enums/actions.enum"
 

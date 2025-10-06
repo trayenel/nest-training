@@ -12,7 +12,7 @@ import { lastValueFrom } from 'rxjs';
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject('USER_SERVICE') private readonly userClient: ClientProxy,
+    @Inject('USER_MANAGEMENT_SERVICE') private readonly userClient: ClientProxy,
   ) {}
 
   async getUserByName(username: string): Promise<UserResponseDto> {

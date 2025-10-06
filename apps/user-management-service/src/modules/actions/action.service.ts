@@ -1,17 +1,14 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { DeleteResult, Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { Repository, DeleteResult } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import {
   ActionDto,
   ActionUpdateDTO,
   ResponseMessageDto,
+  RpcErrorResponseDto,
 } from '@nest-training/shared';
-import { InjectRepository } from '@nestjs/typeorm';
 import { ActionEntity } from '../../typeorm/entities/action.entity';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class ActionService {
@@ -21,88 +18,119 @@ export class ActionService {
   ) {}
 
   async getAllActions(): Promise<ActionDto[]> {
-    return (await this.actionRepository.find()) as ActionDto[];
+    const actions: ActionEntity[] = await this.actionRepository.find();
+
+    if (!actions || actions.length === 0) {
+      const error: RpcErrorResponseDto = {
+        message: 'No actions found',
+        error: 'Not Found',
+        statusCode: 404,
+      };
+      throw new RpcException(error);
+    }
+
+    return actions;
   }
 
-  async getActionById(id: string): Promise<ActionDto> {
+  async getActionByUUID(uuid: string): Promise<ActionDto> {
     const action: ActionEntity | null = await this.actionRepository.findOneBy({
-      actionUUID: id,
+      actionUUID: uuid,
     });
 
-    if (action) {
-      return action;
-    } else {
-      throw new NotFoundException();
+    if (!action) {
+      const error: RpcErrorResponseDto = {
+        message: `Action with ID ${uuid} not found`,
+        error: 'Not Found',
+        statusCode: 404,
+      };
+      throw new RpcException(error);
     }
+
+    return action;
   }
 
   async createAction(action: ActionDto): Promise<ActionDto> {
-    const existingAction: ActionEntity | null =
-      await this.actionRepository.findOne({
-        where: { name: action.name },
-      });
+    const existingAction = await this.actionRepository.findOne({
+      where: { name: action.name },
+    });
 
     if (existingAction) {
-      throw new HttpException(
-        `Role ${existingAction.name} already exists`,
-        HttpStatus.BAD_REQUEST,
-      );
+      const error: RpcErrorResponseDto = {
+        message: `Action ${existingAction.name} already exists`,
+        error: 'Conflict',
+        statusCode: 409,
+      };
+      throw new RpcException(error);
     }
 
-    const actionEntity: ActionEntity = this.actionRepository.create(action);
-
-    return await this.actionRepository.save(actionEntity);
+    const newAction = this.actionRepository.create(action);
+    return await this.actionRepository.save(newAction);
   }
 
   async updateAction(
-    id: string,
+    uuid: string,
     newAction: ActionUpdateDTO,
   ): Promise<ActionDto> {
-    const oldAction: ActionEntity | null =
-      await this.actionRepository.findOneBy({ actionUUID: id });
+    const existingAction = await this.actionRepository.findOneBy({
+      actionUUID: uuid,
+    });
 
-    if (!oldAction) {
-      throw new NotFoundException();
+    if (!existingAction) {
+      const error: RpcErrorResponseDto = {
+        message: `Action with uuid ${uuid} not found`,
+        error: 'Not Found',
+        statusCode: 404,
+      };
+      throw new RpcException(error);
     }
 
-    const updatedAction: ActionEntity = this.actionRepository.merge(
-      oldAction,
+    const updatedAction = this.actionRepository.merge(
+      existingAction,
       newAction,
     );
-
-    return this.actionRepository.save(updatedAction);
+    return await this.actionRepository.save(updatedAction);
   }
 
   async patchAction(
-    id: string,
+    uuid: string,
     partialAction: Partial<ActionUpdateDTO>,
-  ): Promise<ActionEntity> {
-    const oldAction: ActionEntity | null =
-      await this.actionRepository.findOneBy({
-        actionUUID: id,
-      });
+  ): Promise<ActionDto> {
+    const existingAction = await this.actionRepository.findOneBy({
+      actionUUID: uuid,
+    });
 
-    if (!oldAction) {
-      throw new NotFoundException();
+    if (!existingAction) {
+      const error: RpcErrorResponseDto = {
+        message: `Action with uuid ${uuid} not found`,
+        error: 'Not Found',
+        statusCode: 404,
+      };
+      throw new RpcException(error);
     }
 
-    const updatedAction: ActionEntity = this.actionRepository.merge(
-      oldAction,
+    const updatedAction = this.actionRepository.merge(
+      existingAction,
       partialAction,
     );
-
-    return this.actionRepository.save(updatedAction);
+    return await this.actionRepository.save(updatedAction);
   }
 
-  async deleteActionById(id: string): Promise<ResponseMessageDto> {
-    const deleteResult: DeleteResult = await this.actionRepository.delete(id);
+  async deleteActionByUUID(uuid: string): Promise<ResponseMessageDto> {
+    const result: DeleteResult = await this.actionRepository.delete({
+      actionUUID: uuid,
+    });
 
-    if (!deleteResult.affected) {
-      throw new NotFoundException();
+    if (!result.affected) {
+      const error: RpcErrorResponseDto = {
+        message: `Action with ID ${uuid} not found`,
+        error: 'Not Found',
+        statusCode: 404,
+      };
+      throw new RpcException(error);
     }
 
     return {
-      message: `Deleted action with id ${id}`,
+      message: `Action with UUID ${uuid} deleted successfully`,
       statusCode: 200,
     };
   }

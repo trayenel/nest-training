@@ -16,7 +16,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
   canActivate(
     context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  ): Promise<boolean> | Observable<boolean> | boolean {
     const isPublic: boolean | undefined = this.reflector.getAllAndOverride(
       IS_PUBLIC_KEY,
       [context.getHandler(), context.getClass()],

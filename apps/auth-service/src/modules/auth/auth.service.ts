@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import {
+  JwtPayloadDto,
   LoginDataDto,
   RegisterDataDto,
   RpcErrorResponseDto,
@@ -33,11 +34,24 @@ export class AuthService {
 
   async validateUser(userDetails: LoginDataDto): Promise<UserResponseDto> {
     const pattern = { cmd: 'getUserByName' };
+    const errorObject: RpcErrorResponseDto = {
+      message: '',
+      error: '',
+      statusCode: 0,
+    };
 
     try {
       const user: UserResponseDto = await lastValueFrom(
         this.userClient.send(pattern, userDetails.username),
       );
+
+      if (!user.password) {
+        errorObject.message = 'Password cannot be empty';
+        errorObject.error = 'Bad Request';
+        errorObject.statusCode = 400;
+
+        throw new RpcException(errorObject);
+      }
 
       const isMatching: boolean = await bcrypt.compare(
         userDetails.password,
@@ -45,11 +59,9 @@ export class AuthService {
       );
 
       if (!isMatching) {
-        const errorObject: RpcErrorResponseDto = {
-          message: 'Invalid username or password',
-          error: 'Unauthorized',
-          statusCode: 401,
-        };
+        errorObject.message = 'Invalid username or password';
+        errorObject.error = 'Unauthorized';
+        errorObject.statusCode = 401;
 
         throw new RpcException(errorObject);
       }
@@ -65,7 +77,14 @@ export class AuthService {
   }
 
   login(user: UserResponseDto): any {
-    const payload = { sub: user.userId, username: user.username };
+    if (!user.userUUID || !user.username) {
+      return null;
+    }
+
+    const payload: JwtPayloadDto = {
+      sub: user.userUUID,
+      username: user.username,
+    };
 
     return { access_token: this.jwtService.sign(payload) };
   }

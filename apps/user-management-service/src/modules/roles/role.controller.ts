@@ -59,7 +59,7 @@ export class RoleController {
     @Param('actionUUID', ParseUUIDPipe) actionUUID: string,
   ): Promise<RoleActionDto> {
     const action: ActionDto =
-      await this.actionService.getActionById(actionUUID);
+      await this.actionService.getActionByUUID(actionUUID);
 
     if (!action) {
       throw new BadRequestException('Action Not Found');
@@ -74,7 +74,7 @@ export class RoleController {
     @Param('actionUUID', ParseUUIDPipe) actionUUID: string,
   ): Promise<ResponseMessageDto> {
     const action: ActionDto =
-      await this.actionService.getActionById(actionUUID);
+      await this.actionService.getActionByUUID(actionUUID);
 
     if (!action) {
       throw new BadRequestException('Action Not Found');

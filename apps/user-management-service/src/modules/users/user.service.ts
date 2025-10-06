@@ -61,8 +61,11 @@ export class UserService {
   }
 
   async getUserByName(username: string): Promise<UserResponseDto> {
-    const user: UserEntity | null = await this.usersRepository.findOneBy({
-      username: username,
+    const user: UserEntity | null = await this.usersRepository.findOne({
+      where: {
+        username: username,
+      },
+      relations: ['roles', 'roles.actions'],
     });
 
     if (!user) {

@@ -1,60 +1,49 @@
+import { Controller } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseUUIDPipe,
-  Patch,
-  // Patch,
-  Post,
-  Put,
-} from '@nestjs/common';
-import { ActionUpdateDTO, ResponseMessageDto } from '@nest-training/shared';
-import { ActionDto } from '@nest-training/shared';
+  ActionDto,
+  ActionUpdateDTO,
+  ResponseMessageDto,
+} from '@nest-training/shared';
 import { ActionService } from './action.service';
 
-@Controller('actions')
+@Controller()
 export class ActionController {
   constructor(private readonly actionService: ActionService) {}
 
-  @Get('/')
+  @MessagePattern({ cmd: 'getAllActions' })
   async getAllActions(): Promise<ActionDto[]> {
     return await this.actionService.getAllActions();
   }
 
-  @Get('/:id')
-  async getActionById(
-    @Param('id', ParseUUIDPipe) id: string,
-  ): Promise<ActionDto> {
-    return await this.actionService.getActionById(id);
+  @MessagePattern({ cmd: 'getActionByUUID' })
+  async getActionByUUID(@Payload() actionUUID: string): Promise<ActionDto> {
+    return await this.actionService.getActionByUUID(actionUUID);
   }
 
-  @Post('/')
-  async createAction(@Body() newAction: ActionDto): Promise<ActionDto> {
-    return await this.actionService.createAction(newAction);
+  @MessagePattern({ cmd: 'createAction' })
+  async createAction(@Payload() action: ActionDto): Promise<ActionDto> {
+    return await this.actionService.createAction(action);
   }
 
-  @Put('/:id')
+  @MessagePattern({ cmd: 'updateAction' })
   async updateAction(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() actionDTO: ActionUpdateDTO,
+    @Payload() data: { actionUUID: string; action: ActionUpdateDTO },
   ): Promise<ActionDto> {
-    return await this.actionService.updateAction(id, actionDTO);
+    return await this.actionService.updateAction(data.actionUUID, data.action);
   }
 
-  @Patch('/:id')
+  @MessagePattern({ cmd: 'patchAction' })
   async patchAction(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() actionDTO: ActionUpdateDTO,
+    @Payload() data: { actionUUID: string; action: Partial<ActionUpdateDTO> },
   ): Promise<ActionDto> {
-    return await this.actionService.patchAction(id, actionDTO);
+    return await this.actionService.patchAction(data.actionUUID, data.action);
   }
 
-  @Delete('/:id')
-  async deleteActionById(
-    @Param('id', ParseUUIDPipe) id: string,
+  @MessagePattern({ cmd: 'deleteActionByUUID' })
+  async deleteActionByUUID(
+    @Payload() actionUUID: string,
   ): Promise<ResponseMessageDto> {
-    return await this.actionService.deleteActionById(id);
+    return await this.actionService.deleteActionByUUID(actionUUID);
   }
 }
