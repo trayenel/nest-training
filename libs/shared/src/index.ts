@@ -14,3 +14,11 @@ export * from "./models/enums/actions.enum"
 
 export * from "./decorators/public.decorator"
 export * from "./decorators/actions.decorator"
+
+export * from "./typeorm/database.module"
+export * from "./typeorm/entities/action.entity"
+export * from "./typeorm/entities/role.entity"
+export * from "./typeorm/entities/user.entity"
+export * from "./typeorm/entities/role-action.entity"
+export * from "./typeorm/entities/user-role.entity"
+export * from "./typeorm/entities/photo.entity"

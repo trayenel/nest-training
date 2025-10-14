@@ -1,7 +1,8 @@
 # compiled output
-/dist
-/node_modules
-/build
+**/build
+**/node_modules
+**/dist
+**/package-lock.json
 
 # Logs
 logs
@@ -55,7 +56,5 @@ pids
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
-# Node related files
-**/node_modules
-**/dist
-**/package-lock.json
+# User uploaded files
+/uploads/**

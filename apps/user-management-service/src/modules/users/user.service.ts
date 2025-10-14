@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { DeleteResult, Repository } from 'typeorm';
-import { UserEntity } from '../../typeorm/entities/user.entity';
-import { UserRoleEntity } from '../../typeorm/entities/user-role.entity';
-import { RoleEntity } from '../../typeorm/entities/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   LoginDataDto,
   ResponseMessageDto,
+  RoleEntity,
   RpcErrorResponseDto,
+  UserEntity,
   UserRequestDto,
   UserResponseDto,
+  UserRoleEntity,
 } from '@nest-training/shared';
 import { RpcException } from '@nestjs/microservices';
 

@@ -1,0 +1,30 @@
+{
+  "name": "@nest-training/shared",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migration:generate": "npx typeorm-ts-node-commonjs migration:generate -d ./src/typeorm/data-source.ts ./src/typeorm/migrations/${NAME}",
+    "migration:create": "npx typeorm-ts-node-commonjs migration:create ./src/typeorm/migrations/${NAME}",
+    "migration:run": "npx typeorm-ts-node-commonjs migration:run -d ./src/typeorm/data-source.ts",
+    "migration:revert": "npx typeorm-ts-node-commonjs migration:revert -d ./src/typeorm/data-source.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "peerDependencies": {
+    "@nestjs/common": "11.1.6",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/core": "11.1.6",
+    "@nestjs/microservices": "^11.1.6",
+    "@nestjs/typeorm": "^11.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
+    "pg": "^8.16.3",
+    "typeorm": "^0.3.27",
+    "typescript": "5.9.2"
+  }
+}

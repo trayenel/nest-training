@@ -6,15 +6,15 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RoleEntity } from '../../typeorm/entities/role.entity';
 import { Repository } from 'typeorm';
-import { RoleActionEntity } from '../../typeorm/entities/role-action.entity';
 import {
+  ActionEntity,
   ResponseMessageDto,
   RoleActionDto,
+  RoleActionEntity,
   RoleDto,
+  RoleEntity,
 } from '@nest-training/shared';
-import { ActionEntity } from '../../typeorm/entities/action.entity';
 
 @Injectable()
 export class RoleService {

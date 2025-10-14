@@ -3,11 +3,11 @@ import { Repository, DeleteResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   ActionDto,
+  ActionEntity,
   ActionUpdateDTO,
   ResponseMessageDto,
   RpcErrorResponseDto,
 } from '@nest-training/shared';
-import { ActionEntity } from '../../typeorm/entities/action.entity';
 import { RpcException } from '@nestjs/microservices';
 
 @Injectable()

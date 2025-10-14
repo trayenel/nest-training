@@ -1,5 +1,5 @@
 {
-  "name": "user-management-service",
+  "name": "file-service",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -17,20 +17,18 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config test/jest-e2e.json",
+    "migration:generate": "npx typeorm-ts-node-commonjs migration:generate -d ../user-management/src/typeorm/data-source.ts ./src/typeorm/migrations/${NAME}",
+    "migration:create": "npx typeorm-ts-node-commonjs migration:create ../user-management/src/typeorm/migrations/${NAME}",
+    "migration:run": "npx typeorm-ts-node-commonjs migration:run -d ../user-management/src/typeorm/data-source.ts",
+    "migration:revert": "npx typeorm-ts-node-commonjs migration:revert -d ../user-management/src/typeorm/typeorm.config.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
-    "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
-    "@nestjs/microservices": "^11.1.6",
     "@nestjs/platform-express": "^11.0.1",
-    "@nestjs/typeorm": "^11.0.0",
-    "dotenv": "^17.2.3",
-    "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1",
-    "typeorm": "^0.3.27"
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -40,6 +38,7 @@
     "@nestjs/testing": "^11.0.1",
     "@types/express": "^5.0.0",
     "@types/jest": "^30.0.0",
+    "@types/multer": "^2.0.0",
     "@types/node": "^22.10.7",
     "@types/supertest": "^6.0.2",
     "eslint": "^9.18.0",

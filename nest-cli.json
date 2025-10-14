@@ -9,30 +9,39 @@
   },
   "monorepo": true,
   "projects": {
-    "api-gateway" : {
+    "api-gateway": {
       "type": "application",
       "root": "apps/api-gateway",
       "entryFile": "main",
       "sourceRoot": "apps/api-gateway/src",
-      "compilerOptions":{
+      "compilerOptions": {
         "tsConfigPath": "apps/api-gateway/tsconfig.json"
-  }
+      }
     },
     "auth-service": {
       "type": "application",
       "root": "apps/auth-service",
       "entryFile": "main",
       "sourceRoot": "apps/auth-service/src",
-      "compilerOptions":{
+      "compilerOptions": {
         "tsConfigPath": "apps/auth-service/tsconfig.json"
       }
     },
-    "user-management-service" : {
+    "file-service": {
+      "type": "application",
+      "root": "apps/file-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/file-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/file-service/tsconfig.json"
+      }
+    },
+    "user-management-service": {
       "type": "application",
       "root": "apps/user-management-service",
       "entryFile": "main",
       "sourceRoot": "apps/user-management-service/src",
-      "compilerOptions":{
+      "compilerOptions": {
         "tsConfigPath": "apps/user-management-service/tsconfig.json"
       }
     }

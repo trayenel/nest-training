@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from './modules/auth/auth.module';
+import { DatabaseModule } from '@nest-training/shared';
+import { UsersModule } from './modules/users/user.module';
+import { RoleModule } from './modules/roles/role.module';
+import { ActionModule } from './modules/actions/action.module';
 import { ConfigModule } from '@nestjs/config';
-import { UsersModule } from './modules/users/users.module';
 import { resolve } from 'path';
-import { ActionModule } from './modules/action/action.module';
-import { FileModule } from './modules/file/file.module';
 
 @Module({
   imports: [
@@ -12,12 +12,12 @@ import { FileModule } from './modules/file/file.module';
       isGlobal: true,
       envFilePath: resolve(process.cwd(), '.env'),
     }),
-    AuthModule,
+    DatabaseModule,
     UsersModule,
+    RoleModule,
     ActionModule,
-    FileModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class UserManagementServiceModule {}
