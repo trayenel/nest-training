@@ -11,10 +11,10 @@ export class PhotoController {
     @Payload()
     @UploadedFile()
     data: {
-      file: Express.Multer.File;
+      filePath: string;
       userUUID: string;
     },
   ): Promise<any> {
-    return await this.photoService.uploadPhoto(data.file, data.userUUID);
+    return await this.photoService.uploadPhoto(data.filePath, data.userUUID);
   }
 }

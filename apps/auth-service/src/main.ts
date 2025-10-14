@@ -1,11 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-// import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { AuthServiceModule } from './auth-service.module';
+import { MicroserviceOptions, Transport } from "@nestjs/microservices";
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    AppModule,
+    AuthServiceModule,
     {
       transport: Transport.TCP,
       options: {
@@ -14,15 +13,6 @@ async function bootstrap() {
       },
     },
   );
-
-  // const config = new DocumentBuilder()
-  //   .setTitle('My awesome NestJs learning App')
-  //   .setDescription(`Learning app providing user and roles management`)
-  //   .setVersion('1.0')
-  //   .build();
-
-  // const documentFactory = () => SwaggerModule.createDocument(app, config);
-  // SwaggerModule.setup('api', app, documentFactory);
 
   await app.listen();
 }

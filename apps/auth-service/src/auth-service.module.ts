@@ -1,7 +1,7 @@
-import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
-import { AuthModule } from './modules/auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 import { resolve } from 'path';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -14,4 +14,4 @@ import { resolve } from 'path';
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AuthServiceModule {}

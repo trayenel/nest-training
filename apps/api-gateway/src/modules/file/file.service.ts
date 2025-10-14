@@ -11,8 +11,9 @@ export class FileService {
 
   uploadPhoto(file: Express.Multer.File, userUUID: string) {
     const pattern = { cmd: 'uploadPhoto' };
+    const filePath: string = file.path;
 
-    return this.fileClient.send(pattern, { file, userUUID }).pipe(
+    return this.fileClient.send(pattern, { filePath, userUUID }).pipe(
       catchError((err: RpcErrorResponseDto) => {
         throw new RpcException(err);
       }),

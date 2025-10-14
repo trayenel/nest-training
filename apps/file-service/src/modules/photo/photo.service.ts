@@ -11,11 +11,11 @@ export class PhotoService {
   ) {}
 
   async uploadPhoto(
-    file: Express.Multer.File,
+    filePath: string,
     userUUID: string,
   ): Promise<PhotoEntity> {
     const photoEntity: PhotoEntity = this.photoRepository.create({
-      filePath: file.path,
+      filePath: filePath,
       user_id: userUUID,
     });
 
