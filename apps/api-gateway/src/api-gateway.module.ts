@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './modules/auth/auth.module';
-import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
-import { resolve } from 'path';
 import { ActionModule } from './modules/action/action.module';
 import { FileModule } from './modules/file/file.module';
+import { resolve } from 'path';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -20,4 +20,4 @@ import { FileModule } from './modules/file/file.module';
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class ApiGatewayModule {}
